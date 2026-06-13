@@ -17,6 +17,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <ui:TitleBar Grid.Row="0" Title="Richie">
@@ -46,5 +47,9 @@
                 </ui:NavigationViewItem>
             </ui:NavigationView.FooterMenuItems>
         </ui:NavigationView>
+
+        <Border Grid.Row="2" Padding="16,8" HorizontalAlignment="Right">
+            <ui:Button Content="Log out" Click="OnLogoutClick" />
+        </Border>
     </Grid>
 </ui:FluentWindow>

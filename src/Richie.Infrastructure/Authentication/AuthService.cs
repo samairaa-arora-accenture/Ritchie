@@ -91,7 +91,7 @@ public sealed class AuthService : IAuthService
         user.LockoutEndUtc = null;
         user.LastLoginUtc = _clock.UtcNow;
         db.SaveChanges();
-        return new LoginResult(LoginStatus.Success, UserId: user.Id);
+        return new LoginResult(LoginStatus.Success, UserId: user.Id, FullName: user.FullName);
     }
 
     public IReadOnlyList<SecurityQuestion> GetSecurityQuestions(string username)

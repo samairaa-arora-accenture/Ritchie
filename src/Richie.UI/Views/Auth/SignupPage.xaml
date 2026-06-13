@@ -1,0 +1,64 @@
+<Page x:Class="Richie.UI.Views.Auth.SignupPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      mc:Ignorable="d"
+      Title="Create account">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,24">
+        <StackPanel Width="420" HorizontalAlignment="Center">
+            <ui:TextBlock FontTypography="TitleLarge" HorizontalAlignment="Center" Text="Create your account" />
+            <ui:TextBlock Appearance="Secondary" HorizontalAlignment="Center"
+                          Margin="0,0,0,20" Text="Everything stays on this device." />
+
+            <ui:TextBox PlaceholderText="Full name" Margin="0,0,0,10"
+                        Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" />
+            <ui:TextBox PlaceholderText="Username" Margin="0,0,0,10"
+                        Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" />
+            <ui:PasswordBox PlaceholderText="Password (min 8 characters)" Margin="0,0,0,10"
+                            Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <ui:PasswordBox PlaceholderText="Confirm password" Margin="0,0,0,10"
+                            Password="{Binding ConfirmPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Grid Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="12" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <ui:TextBox Grid.Column="0" PlaceholderText="Age"
+                            Text="{Binding AgeText, UpdateSourceTrigger=PropertyChanged}" />
+                <ui:TextBox Grid.Column="2" PlaceholderText="City"
+                            Text="{Binding City, UpdateSourceTrigger=PropertyChanged}" />
+            </Grid>
+
+            <ui:TextBlock FontTypography="BodyStrong" Margin="0,8,0,8" Text="Security questions" />
+
+            <ComboBox Margin="0,0,0,6" ItemsSource="{Binding Questions}"
+                      DisplayMemberPath="Text" SelectedValuePath="Value"
+                      SelectedValue="{Binding Question1}" />
+            <ui:TextBox PlaceholderText="Answer 1" Margin="0,0,0,12"
+                        Text="{Binding Answer1, UpdateSourceTrigger=PropertyChanged}" />
+
+            <ComboBox Margin="0,0,0,6" ItemsSource="{Binding Questions}"
+                      DisplayMemberPath="Text" SelectedValuePath="Value"
+                      SelectedValue="{Binding Question2}" />
+            <ui:TextBox PlaceholderText="Answer 2" Margin="0,0,0,12"
+                        Text="{Binding Answer2, UpdateSourceTrigger=PropertyChanged}" />
+
+            <ComboBox Margin="0,0,0,6" ItemsSource="{Binding Questions}"
+                      DisplayMemberPath="Text" SelectedValuePath="Value"
+                      SelectedValue="{Binding Question3}" />
+            <ui:TextBox PlaceholderText="Answer 3" Margin="0,0,0,12"
+                        Text="{Binding Answer3, UpdateSourceTrigger=PropertyChanged}" />
+
+            <ui:TextBlock Foreground="#C42B1C" TextWrapping="Wrap" Margin="0,0,0,8" Text="{Binding Error}" />
+
+            <ui:Button Content="Create account" Appearance="Primary"
+                       HorizontalAlignment="Stretch" Command="{Binding SignupCommand}" />
+            <ui:HyperlinkButton Content="Back to login" HorizontalAlignment="Center"
+                                Margin="0,8,0,0" Command="{Binding BackToLoginCommand}" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

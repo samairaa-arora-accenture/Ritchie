@@ -9,7 +9,11 @@ public sealed record SignupResult(SignupStatus Status, string? Error = null)
 
 public enum LoginStatus { Success, InvalidCredentials, LockedOut }
 
-public sealed record LoginResult(LoginStatus Status, Guid? UserId = null, DateTime? LockoutEndUtc = null)
+public sealed record LoginResult(
+    LoginStatus Status,
+    Guid? UserId = null,
+    string? FullName = null,
+    DateTime? LockoutEndUtc = null)
 {
     public bool Succeeded => Status == LoginStatus.Success;
 }
