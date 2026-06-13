@@ -13,7 +13,8 @@ public sealed record LoginResult(
     LoginStatus Status,
     Guid? UserId = null,
     string? FullName = null,
-    DateTime? LockoutEndUtc = null)
+    DateTime? LockoutEndUtc = null,
+    bool IsFirstLogin = false)
 {
     public bool Succeeded => Status == LoginStatus.Success;
 }

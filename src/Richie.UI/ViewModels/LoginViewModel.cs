@@ -38,7 +38,7 @@ public partial class LoginViewModel : ObservableObject
             case LoginStatus.Success:
                 string name = result.FullName ?? Username;
                 _session.SignIn(result.UserId!.Value, name);
-                _nav.NotifyAuthenticated(result.UserId!.Value, name);
+                _nav.NotifyAuthenticated(result.UserId!.Value, name, result.IsFirstLogin);
                 break;
             case LoginStatus.LockedOut:
                 Error = $"Account locked due to failed attempts. Try again after {result.LockoutEndUtc?.ToLocalTime():t}.";

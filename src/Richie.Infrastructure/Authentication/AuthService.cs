@@ -87,11 +87,13 @@ public sealed class AuthService : IAuthService
                 : new LoginResult(LoginStatus.InvalidCredentials);
         }
 
+        bool isFirstLogin = user.LastLoginUtc is null;
         user.FailedLoginAttempts = 0;
         user.LockoutEndUtc = null;
         user.LastLoginUtc = _clock.UtcNow;
         db.SaveChanges();
-        return new LoginResult(LoginStatus.Success, UserId: user.Id, FullName: user.FullName);
+        return new LoginResult(LoginStatus.Success, UserId: user.Id, FullName: user.FullName,
+            IsFirstLogin: isFirstLogin);
     }
 
     public IReadOnlyList<SecurityQuestion> GetSecurityQuestions(string username)

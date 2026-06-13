@@ -1,9 +1,10 @@
 namespace Richie.UI.Services;
 
-public sealed class AuthenticatedEventArgs(Guid userId, string fullName) : EventArgs
+public sealed class AuthenticatedEventArgs(Guid userId, string fullName, bool isFirstLogin) : EventArgs
 {
     public Guid UserId { get; } = userId;
     public string FullName { get; } = fullName;
+    public bool IsFirstLogin { get; } = isFirstLogin;
 }
 
 /// <summary>
@@ -15,5 +16,5 @@ public interface IAuthNavigation
     void ShowLogin();
     void ShowSignup();
     void ShowForgotPassword();
-    void NotifyAuthenticated(Guid userId, string fullName);
+    void NotifyAuthenticated(Guid userId, string fullName, bool isFirstLogin);
 }

@@ -18,6 +18,6 @@ public sealed class AuthNavigationService : IAuthNavigation
     public void ShowSignup() => NavigateRequested?.Invoke(AuthPage.Signup);
     public void ShowForgotPassword() => NavigateRequested?.Invoke(AuthPage.ForgotPassword);
 
-    public void NotifyAuthenticated(Guid userId, string fullName) =>
-        Authenticated?.Invoke(this, new AuthenticatedEventArgs(userId, fullName));
+    public void NotifyAuthenticated(Guid userId, string fullName, bool isFirstLogin) =>
+        Authenticated?.Invoke(this, new AuthenticatedEventArgs(userId, fullName, isFirstLogin));
 }
