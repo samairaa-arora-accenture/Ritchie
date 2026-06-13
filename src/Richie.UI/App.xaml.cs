@@ -54,9 +54,16 @@ public partial class App : System.Windows.Application
 
                 services.AddTransient<AuthWindow>();
                 services.AddTransient<MainWindow>();
+
+                services.AddTransient<AssetDocumentationViewModel>();
+                services.AddTransient<AddEditAssetViewModel>();
+                services.AddTransient<Views.Assets.AddEditAssetWindow>();
             })
             .Build();
     }
+
+    /// <summary>Service provider for views that resolve their view-models / dialogs.</summary>
+    public IServiceProvider Services => _host.Services;
 
     /// <summary>Requested from the Help page to replay the app tour.</summary>
     public void RequestTour() => _host.Services.GetRequiredService<TourService>().Request();
