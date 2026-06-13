@@ -10,13 +10,23 @@ namespace Richie.Infrastructure.Persistence;
 /// </summary>
 public sealed class SqlCipherDbContextFactory : IAppDbContextFactory
 {
+    private readonly IDatabaseKeyProvider _keyProvider;
+
     static SqlCipherDbContextFactory()
     {
         // Register the SQLCipher native provider (bundle_e_sqlcipher) for SQLitePCLRaw.
         SQLitePCL.Batteries_V2.Init();
     }
 
-    public RichieDbContext Create(string databasePath, string key)
+    public SqlCipherDbContextFactory(IDatabaseKeyProvider keyProvider) => _keyProvider = keyProvider;
+
+    public RichieDbContext Create() => Build(AppPaths.DatabasePath, _keyProvider.GetOrCreateKey());
+
+    /// <summary>
+    /// Low-level builder used by production (via <see cref="Create"/>) and by tests that
+    /// need to target a specific encrypted file and key.
+    /// </summary>
+    public static RichieDbContext Build(string databasePath, string key)
     {
         string connectionString = new SqliteConnectionStringBuilder
         {

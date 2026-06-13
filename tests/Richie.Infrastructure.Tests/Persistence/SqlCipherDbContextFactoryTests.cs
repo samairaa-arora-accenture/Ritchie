@@ -12,13 +12,12 @@ namespace Richie.Infrastructure.Tests.Persistence;
 public sealed class SqlCipherDbContextFactoryTests : IDisposable
 {
     private const string CorrectKey = "correct-master-key";
-    private readonly SqlCipherDbContextFactory _factory = new();
     private readonly string _dbPath =
         Path.Combine(Path.GetTempPath(), $"richie-test-{Guid.NewGuid():N}.db");
 
     private void Seed(string key)
     {
-        using RichieDbContext ctx = _factory.Create(_dbPath, key);
+        using RichieDbContext ctx = SqlCipherDbContextFactory.Build(_dbPath, key);
         ctx.Database.ExecuteSqlRaw("CREATE TABLE probe(id INTEGER PRIMARY KEY, val TEXT);");
         ctx.Database.ExecuteSqlRaw("INSERT INTO probe(val) VALUES ('hello-encrypted-world');");
     }
@@ -28,7 +27,7 @@ public sealed class SqlCipherDbContextFactoryTests : IDisposable
     {
         Seed(CorrectKey);
 
-        using RichieDbContext ctx = _factory.Create(_dbPath, CorrectKey);
+        using RichieDbContext ctx = SqlCipherDbContextFactory.Build(_dbPath, CorrectKey);
         ctx.Database.OpenConnection();
         using var cmd = ctx.Database.GetDbConnection().CreateCommand();
         cmd.CommandText = "SELECT val FROM probe LIMIT 1;";
@@ -41,7 +40,7 @@ public sealed class SqlCipherDbContextFactoryTests : IDisposable
     {
         Seed(CorrectKey);
 
-        using RichieDbContext ctx = _factory.Create(_dbPath, "wrong-key");
+        using RichieDbContext ctx = SqlCipherDbContextFactory.Build(_dbPath, "wrong-key");
 
         // SQLCipher cannot decrypt the header with the wrong key.
         Assert.Throws<SqliteException>(() =>

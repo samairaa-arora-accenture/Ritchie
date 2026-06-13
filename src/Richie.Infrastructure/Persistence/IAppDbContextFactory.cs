@@ -1,11 +1,10 @@
 namespace Richie.Infrastructure.Persistence;
 
 /// <summary>
-/// Creates a <see cref="RichieDbContext"/> bound to a SQLCipher-encrypted database file.
-/// The <paramref name="key"/> is the session key established after login; without the
-/// correct key the file cannot be opened.
+/// Creates a <see cref="RichieDbContext"/> bound to the SQLCipher-encrypted database file,
+/// using the key resolved from <see cref="IDatabaseKeyProvider"/>.
 /// </summary>
 public interface IAppDbContextFactory
 {
-    RichieDbContext Create(string databasePath, string key);
+    RichieDbContext Create();
 }

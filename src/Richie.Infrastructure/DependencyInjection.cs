@@ -1,5 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
+using Richie.Application.Abstractions;
+using Richie.Application.Authentication;
 using Richie.Application.Security;
+using Richie.Infrastructure.Authentication;
 using Richie.Infrastructure.Persistence;
 using Richie.Infrastructure.Security;
 
@@ -16,7 +19,14 @@ public static class DependencyInjection
         services.AddSingleton<IKeyDerivation, Pbkdf2KeyDerivation>();
         services.AddSingleton<IFieldCipher, AesGcmFieldCipher>();
         services.AddSingleton<IPasswordHasher, Argon2PasswordHasher>();
+
+        services.AddSingleton<IDatabaseKeyProvider, DpapiDatabaseKeyProvider>();
         services.AddSingleton<IAppDbContextFactory, SqlCipherDbContextFactory>();
+        services.AddSingleton<IDatabaseInitializer, DatabaseInitializer>();
+
+        services.AddSingleton<IClock, SystemClock>();
+        services.AddSingleton<IUserSession, UserSession>();
+        services.AddSingleton<IAuthService, AuthService>();
         return services;
     }
 }
