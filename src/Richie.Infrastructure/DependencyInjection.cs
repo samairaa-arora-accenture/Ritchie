@@ -2,9 +2,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Richie.Application.Abstractions;
 using Richie.Application.Assets;
 using Richie.Application.Authentication;
+using Richie.Application.Notifications;
 using Richie.Application.Security;
 using Richie.Infrastructure.Assets;
 using Richie.Infrastructure.Authentication;
+using Richie.Infrastructure.Notifications;
 using Richie.Infrastructure.Persistence;
 using Richie.Infrastructure.Security;
 
@@ -32,6 +34,8 @@ public static class DependencyInjection
 
         services.AddSingleton<IValuationService, ValuationService>();
         services.AddSingleton<IAssetService, AssetService>();
+        services.AddSingleton<ISipService, SipService>();
+        services.AddSingleton<INotificationService, NotificationService>();
         return services;
     }
 }
