@@ -57,7 +57,9 @@ public partial class App : System.Windows.Application
 
                 services.AddTransient<AssetDocumentationViewModel>();
                 services.AddTransient<AddEditAssetViewModel>();
+                services.AddTransient<AssetDetailsViewModel>();
                 services.AddTransient<Views.Assets.AddEditAssetWindow>();
+                services.AddTransient<Views.Assets.AssetDetailsWindow>();
             })
             .Build();
     }

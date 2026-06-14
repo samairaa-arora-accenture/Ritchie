@@ -19,6 +19,22 @@ public partial class AssetDocumentationPage : Page
 
     private void OnAddAsset(object sender, RoutedEventArgs e) => OpenEditor(null);
 
+    private void OnViewAsset(object sender, RoutedEventArgs e)
+    {
+        if (sender is not FrameworkElement { Tag: Guid id })
+            return;
+
+        var window = ((App)System.Windows.Application.Current).Services.GetRequiredService<AssetDetailsWindow>();
+        window.Owner = Window.GetWindow(this);
+        window.Details.Initialize(id);
+        window.ShowDialog();
+
+        bool editRequested = window.Details.EditRequested;
+        Vm.Refresh(); // exclusion may have changed
+        if (editRequested)
+            OpenEditor(id);
+    }
+
     private void OnEditAsset(object sender, RoutedEventArgs e)
     {
         if (sender is FrameworkElement { Tag: Guid id })
