@@ -1,4 +1,5 @@
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using Richie.Application.Authentication;
 using Richie.Application.Notifications;
 using Richie.UI.Services;
@@ -49,7 +50,26 @@ public partial class MainWindow : FluentWindow
         PreviewMouseDown += (_, _) => _inactivity.Notify();
         PreviewKeyDown += (_, _) => _inactivity.Notify();
 
-        Loaded += (_, _) => RootNavigation.Navigate(typeof(DashboardPage));
+        Loaded += (_, _) =>
+        {
+            RootNavigation.Navigate(typeof(DashboardPage));
+            UpdateBadge();
+        };
+    }
+
+    private void UpdateBadge()
+    {
+        int unread = _notifications.GetUnreadCount();
+        BadgeText.Text = unread > 99 ? "99+" : unread.ToString();
+        BadgeBorder.Visibility = unread > 0 ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    private void RefreshNotifications()
+    {
+        IReadOnlyList<NotificationDto> recent = _notifications.GetRecent(20);
+        NotificationsList.ItemsSource = recent;
+        NotificationsEmpty.Visibility = recent.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        UpdateBadge();
     }
 
     /// <summary>Navigate the shell to a page (used by Dashboard quick actions).</summary>
@@ -57,10 +77,23 @@ public partial class MainWindow : FluentWindow
 
     private void OnNotificationsClick(object sender, RoutedEventArgs e)
     {
-        IReadOnlyList<NotificationDto> recent = _notifications.GetRecent(10);
-        NotificationsList.ItemsSource = recent;
-        NotificationsEmpty.Visibility = recent.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        RefreshNotifications();
         NotificationsPopup.IsOpen = true;
+    }
+
+    private void OnMarkAllRead(object sender, RoutedEventArgs e)
+    {
+        _notifications.MarkAllRead();
+        RefreshNotifications();
+    }
+
+    private void OnDismissNotification(object sender, RoutedEventArgs e)
+    {
+        if (sender is FrameworkElement { Tag: Guid id })
+        {
+            _notifications.Dismiss(id);
+            RefreshNotifications();
+        }
     }
 
     private void OnProfileClick(object sender, RoutedEventArgs e) => ProfilePopup.IsOpen = true;
@@ -69,6 +102,21 @@ public partial class MainWindow : FluentWindow
     {
         ProfilePopup.IsOpen = false;
         RootNavigation.Navigate(typeof(SettingsPage));
+    }
+
+    private void OnProfileNavClick(object sender, RoutedEventArgs e)
+    {
+        ProfilePopup.IsOpen = false;
+        RootNavigation.Navigate(typeof(ProfilePage));
+    }
+
+    private void OnBackupRestoreClick(object sender, RoutedEventArgs e)
+    {
+        ProfilePopup.IsOpen = false;
+        var window = ((App)System.Windows.Application.Current).Services
+            .GetRequiredService<Views.Profile.BackupWindow>();
+        window.Owner = this;
+        window.ShowDialog();
     }
 
     private void OnHelpClick(object sender, RoutedEventArgs e)

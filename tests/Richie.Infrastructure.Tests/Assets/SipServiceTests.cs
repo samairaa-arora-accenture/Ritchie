@@ -70,7 +70,7 @@ public sealed class SipServiceTests : IDisposable
         Assert.Single(_sut.GetHistory(id));
         Assert.Equal(new DateTime(2026, 2, 15, 0, 0, 0, DateTimeKind.Utc), _sut.GetSchedule(id)!.NextRunDateUtc);
 
-        var notifications = new NotificationService(_db, _session).GetRecent();
+        var notifications = new NotificationService(_db, _session, new Richie.Infrastructure.Settings.AppSettingsService(_db, _session)).GetRecent();
         Assert.Contains(notifications, n => n.Type == NotificationType.SipPosted);
     }
 

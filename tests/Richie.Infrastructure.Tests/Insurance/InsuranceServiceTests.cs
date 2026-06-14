@@ -19,7 +19,7 @@ public sealed class InsuranceServiceTests : IDisposable
     {
         _session.SignIn(Guid.NewGuid(), "Tester");
         _sut = new InsuranceService(_db, _session, _clock);
-        _notifications = new NotificationService(_db, _session);
+        _notifications = new NotificationService(_db, _session, new Richie.Infrastructure.Settings.AppSettingsService(_db, _session));
     }
 
     private InsurancePolicyInput Input(InsuranceType type = InsuranceType.Health, DateTime? renewal = null) =>

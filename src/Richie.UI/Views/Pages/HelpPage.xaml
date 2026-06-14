@@ -5,13 +5,47 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       mc:Ignorable="d"
-      Title="Help &amp; About">
-    <StackPanel Margin="32" VerticalAlignment="Top">
-        <ui:TextBlock FontTypography="TitleLarge" Text="Help &amp; About" />
-        <ui:TextBlock Appearance="Secondary" Margin="0,8,0,16" TextWrapping="Wrap"
-                      Text="User guide, FAQs and the app tour. Full content arrives in a later phase." />
-        <ui:Button Content="Replay app tour" Click="OnReplayTour" />
-        <ui:TextBlock Appearance="Secondary" Margin="0,24,0,0"
-                      Text="Richie — offline personal finance. Version 0.1 (in development)." />
-    </StackPanel>
+      Title="Help &amp; About"
+      ScrollViewer.CanContentScroll="False">
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="24">
+            <StackPanel MaxWidth="760" HorizontalAlignment="Left">
+                <ui:TextBlock FontTypography="TitleLarge" Text="Help &amp; About" Margin="0,0,0,12" />
+
+                <ui:Card Margin="0,0,0,12">
+                    <StackPanel>
+                        <ui:TextBlock FontTypography="BodyStrong" Text="User guide" Margin="0,0,0,6" />
+                        <ui:TextBlock Appearance="Secondary" TextWrapping="Wrap"
+                                      Text="• Assets — add holdings (the form adapts per type), track SIPs, link goals, attach documents, and see allocation &amp; P&amp;L.&#10;• Expenses — log spending and income, set budgets, and view analytics; attach bills to any expense.&#10;• Password Vault — re-authenticate each time; reveal/copy needs your master password; copies auto-clear after 30s.&#10;• Financial Health Audit — health &amp; risk scores, benchmark comparison, compliance and insurance coverage.&#10;• Reports &amp; Export — generate PDF/PPTX reports; unmasked password export is gated.&#10;• Settings — theme, auto-lock, notifications, budgets, jewellery toggle." />
+                    </StackPanel>
+                </ui:Card>
+
+                <ui:Card Margin="0,0,0,12">
+                    <StackPanel>
+                        <ui:TextBlock FontTypography="BodyStrong" Text="FAQs" Margin="0,0,0,6" />
+                        <ui:TextBlock Appearance="Secondary" TextWrapping="Wrap"
+                                      Text="Q: Is my data sent anywhere?  A: No — Richie is fully offline; everything stays encrypted on this device.&#10;Q: I forgot my vault master password.  A: Use 'Forgot master password?' on the vault if you enabled security-question recovery.&#10;Q: Can I disable encryption?  A: No — the database and vault are always encrypted.&#10;Q: How do I back up?  A: Profile menu → Backup &amp; restore." />
+                    </StackPanel>
+                </ui:Card>
+
+                <ui:Card Margin="0,0,0,12">
+                    <StackPanel>
+                        <ui:TextBlock FontTypography="BodyStrong" Text="App tour" Margin="0,0,0,6" />
+                        <ui:Button Content="Replay app tour" Click="OnReplayTour" HorizontalAlignment="Left" />
+                    </StackPanel>
+                </ui:Card>
+
+                <ui:Card>
+                    <StackPanel>
+                        <ui:TextBlock FontTypography="BodyStrong" Text="About" Margin="0,0,0,6" />
+                        <ui:TextBlock Appearance="Secondary" Text="Richie — offline-first personal finance for Windows." />
+                        <ui:TextBlock Appearance="Secondary" Text="Version 0.9 (in development)." />
+                        <ui:TextBlock Appearance="Secondary" TextWrapping="Wrap" Margin="0,6,0,0"
+                                      Text="Tech: .NET 10 · WPF + WPF-UI (Fluent) · EF Core / SQLite + SQLCipher · LiveCharts2 · QuestPDF · OpenXML." />
+                        <ui:TextBlock Appearance="Secondary" Margin="0,6,0,0" Text="Contact: the Richie team." />
+                    </StackPanel>
+                </ui:Card>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </Page>

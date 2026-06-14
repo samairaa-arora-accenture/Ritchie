@@ -3,9 +3,73 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:controls="clr-namespace:Richie.UI.Controls"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       mc:Ignorable="d"
-      Title="Settings">
-    <controls:ModulePlaceholder Title="Settings"
-                                Description="Theme, budgets, notifications, session-lock timeout and more. Arrives in Phase 9." />
+      Title="Settings"
+      ScrollViewer.CanContentScroll="False">
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="24">
+            <StackPanel>
+                <Grid Margin="0,0,0,12">
+                    <ui:TextBlock FontTypography="TitleLarge" Text="Settings" VerticalAlignment="Center" />
+                    <ui:Button HorizontalAlignment="Right" Content="Save changes" Appearance="Primary" Click="OnSave" />
+                </Grid>
+
+                <ui:Card Margin="0,0,0,12">
+                    <StackPanel>
+                        <ui:TextBlock FontTypography="BodyStrong" Text="Appearance" Margin="0,0,0,8" />
+                        <ui:TextBlock Appearance="Secondary" Text="Theme" FontTypography="Caption" />
+                        <ComboBox Width="200" HorizontalAlignment="Left" ItemsSource="{Binding Themes}"
+                                  SelectedItem="{Binding SelectedTheme}" />
+                    </StackPanel>
+                </ui:Card>
+
+                <ui:Card Margin="0,0,0,12">
+                    <StackPanel>
+                        <ui:TextBlock FontTypography="BodyStrong" Text="Security" Margin="0,0,0,8" />
+                        <ui:TextBlock Appearance="Secondary" Text="Auto-lock after (minutes of inactivity)" FontTypography="Caption" />
+                        <ComboBox Width="200" HorizontalAlignment="Left" ItemsSource="{Binding LockMinutesOptions}"
+                                  SelectedItem="{Binding SessionLockMinutes}" Margin="0,0,0,10" />
+                        <ui:TextBlock Appearance="Secondary" TextWrapping="Wrap" Text="{Binding EncryptionStatus}" Margin="0,0,0,10" />
+                        <ui:Button Content="Change master password" Click="OnChangeMasterPassword" />
+                    </StackPanel>
+                </ui:Card>
+
+                <ui:Card Margin="0,0,0,12">
+                    <StackPanel>
+                        <ui:TextBlock FontTypography="BodyStrong" Text="Portfolio" Margin="0,0,0,8" />
+                        <CheckBox Content="Include gold jewellery in portfolio valuation"
+                                  IsChecked="{Binding IncludeJewelleryInPortfolio}" Margin="0,0,0,10" />
+                        <ui:Button Content="Budget targets" Click="OnBudgets" />
+                    </StackPanel>
+                </ui:Card>
+
+                <ui:Card Margin="0,0,0,12">
+                    <StackPanel>
+                        <ui:TextBlock FontTypography="BodyStrong" Text="Notifications" Margin="0,0,0,8" />
+                        <ui:TextBlock Appearance="Secondary" FontTypography="Caption" Margin="0,0,0,6"
+                                      Text="Turn individual notification types on or off." />
+                        <ItemsControl ItemsSource="{Binding NotificationPrefs}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Margin="0,2" Content="{Binding Name}" IsChecked="{Binding IsEnabled}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ui:Card>
+
+                <ui:Card>
+                    <StackPanel>
+                        <ui:TextBlock FontTypography="BodyStrong" Text="Backup" Margin="0,0,0,8" />
+                        <ui:TextBlock Appearance="Secondary" Text="Backup frequency" FontTypography="Caption" />
+                        <ComboBox Width="200" HorizontalAlignment="Left" ItemsSource="{Binding BackupFrequencies}"
+                                  SelectedItem="{Binding BackupFrequency}" />
+                        <ui:TextBlock Appearance="Secondary" FontTypography="Caption" TextWrapping="Wrap" Margin="0,8,0,0"
+                                      Text="Run a backup any time from the Backup &amp; Restore screen (Profile menu)." />
+                    </StackPanel>
+                </ui:Card>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </Page>

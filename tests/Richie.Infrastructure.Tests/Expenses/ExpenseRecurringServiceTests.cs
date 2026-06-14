@@ -37,7 +37,7 @@ public sealed class ExpenseRecurringServiceTests : IDisposable
         ExpenseSummary expense = Assert.Single(_expenses.GetExpenses());
         Assert.True(expense.IsRecurring);
 
-        var notifications = new NotificationService(_db, _session).GetRecent();
+        var notifications = new NotificationService(_db, _session, new Richie.Infrastructure.Settings.AppSettingsService(_db, _session)).GetRecent();
         Assert.Contains(notifications, n => n.Type == NotificationType.RecurringExpense);
     }
 

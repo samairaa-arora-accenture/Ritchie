@@ -8,8 +8,10 @@ using Richie.Application.Expenses;
 using Richie.Application.Income;
 using Richie.Application.Insurance;
 using Richie.Application.Notifications;
+using Richie.Application.Profile;
 using Richie.Application.Reports;
 using Richie.Application.Security;
+using Richie.Application.Settings;
 using Richie.Application.Storage;
 using Richie.Application.Vault;
 using Richie.Domain.Audit;
@@ -73,6 +75,9 @@ public static class DependencyInjection
         services.AddSingleton<IDashboardService, Dashboard.DashboardService>();
         services.AddSingleton<IReportService, Reports.ReportService>();
         services.AddSingleton<IReportExporter, Reports.ReportExporter>();
+        services.AddSingleton<IAppSettingsService, Settings.AppSettingsService>();
+        services.AddSingleton<IBackupService, Storage.BackupService>();
+        services.AddSingleton<IProfileService, Profile.ProfileService>();
         return services;
     }
 }

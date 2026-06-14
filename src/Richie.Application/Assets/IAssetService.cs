@@ -20,6 +20,10 @@ public interface IAssetService
     /// No effect for other asset types. Returns false if not found / not jewellery.</summary>
     bool SetPortfolioExclusion(Guid id, bool excluded);
 
+    /// <summary>Bulk include/exclude ALL gold-jewellery assets from portfolio valuation, for the
+    /// global Settings toggle (PRD §15). Returns the number of jewellery assets updated.</summary>
+    int SetAllJewelleryExclusion(bool excluded);
+
     /// <summary>Totals + allocation; excluded gold jewellery is omitted (PRD §6.10).</summary>
     PortfolioSummary GetPortfolioSummary();
 }

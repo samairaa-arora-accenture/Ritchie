@@ -11,4 +11,6 @@ public interface INotificationService
     IReadOnlyList<NotificationDto> GetRecent(int count = 20);
     int GetUnreadCount();
     void MarkAllRead();
+    void MarkRead(Guid id);
+    void Dismiss(Guid id);
 }

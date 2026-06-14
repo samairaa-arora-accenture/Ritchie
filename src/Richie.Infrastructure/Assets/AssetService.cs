@@ -108,6 +108,28 @@ public sealed class AssetService : IAssetService
         return true;
     }
 
+    public int SetAllJewelleryExclusion(bool excluded)
+    {
+        Guid userId = UserId;
+        using RichieDbContext db = _factory.Create();
+        List<Asset> jewellery = db.Assets
+            .Where(a => a.UserId == userId && a.Type == AssetType.GoldJewellery && a.IsExcludedFromPortfolio != excluded)
+            .ToList();
+        if (jewellery.Count == 0)
+            return 0;
+
+        DateTime now = _clock.UtcNow;
+        foreach (Asset asset in jewellery)
+        {
+            asset.IsExcludedFromPortfolio = excluded;
+            asset.UpdatedUtc = now;
+        }
+        AuditWriter.Add(db, userId, now, Module, AuditAction.Update, nameof(Asset), userId,
+            $"{(excluded ? "Excluded" : "Included")} all gold jewellery {(excluded ? "from" : "in")} portfolio valuation.");
+        db.SaveChanges();
+        return jewellery.Count;
+    }
+
     public PortfolioSummary GetPortfolioSummary()
     {
         Guid userId = UserId;

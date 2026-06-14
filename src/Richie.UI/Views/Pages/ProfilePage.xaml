@@ -1,0 +1,56 @@
+<Page x:Class="Richie.UI.Views.Pages.ProfilePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      mc:Ignorable="d"
+      Title="Profile"
+      ScrollViewer.CanContentScroll="False"
+      Loaded="OnLoaded">
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="24">
+            <StackPanel MaxWidth="640" HorizontalAlignment="Left">
+                <ui:TextBlock FontTypography="TitleLarge" Text="Profile" Margin="0,0,0,12" />
+
+                <ui:Card Margin="0,0,0,12">
+                    <StackPanel>
+                        <ui:TextBlock FontTypography="BodyStrong" Text="Account" Margin="0,0,0,8" />
+                        <ui:TextBlock Appearance="Secondary" Text="Username (cannot change)" FontTypography="Caption" />
+                        <ui:TextBlock Margin="0,0,0,8" Text="{Binding Username}" />
+                        <ui:TextBox PlaceholderText="Full name" Margin="0,0,0,8"
+                                    Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" />
+                        <ui:TextBox PlaceholderText="Age (used for benchmarking)" Margin="0,0,0,8"
+                                    Text="{Binding AgeText, UpdateSourceTrigger=PropertyChanged}" />
+                        <ui:TextBox PlaceholderText="City" Margin="0,0,0,8"
+                                    Text="{Binding City, UpdateSourceTrigger=PropertyChanged}" />
+                        <ui:TextBlock Foreground="#C42B1C" TextWrapping="Wrap" Text="{Binding Error}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <ui:Button Content="Save profile" Appearance="Primary" Margin="0,0,8,0" Click="OnSave" />
+                            <ui:Button Content="Change password" Click="OnChangePassword" />
+                        </StackPanel>
+                    </StackPanel>
+                </ui:Card>
+
+                <ui:Card Margin="0,0,0,12">
+                    <StackPanel>
+                        <ui:TextBlock FontTypography="BodyStrong" Text="Security score" />
+                        <StackPanel Orientation="Horizontal">
+                            <ui:TextBlock FontTypography="Display" Text="{Binding SecurityScore}" />
+                            <ui:TextBlock Appearance="Secondary" VerticalAlignment="Bottom" Margin="3,0,0,6" Text="/ 100" />
+                        </StackPanel>
+                        <ui:TextBlock Appearance="Secondary" FontTypography="Caption" TextWrapping="Wrap"
+                                      Text="{Binding SecurityScoreNote}" />
+                    </StackPanel>
+                </ui:Card>
+
+                <ui:Card>
+                    <StackPanel>
+                        <ui:TextBlock FontTypography="BodyStrong" Text="Storage used" />
+                        <ui:TextBlock Appearance="Secondary" Text="{Binding StorageText}" />
+                    </StackPanel>
+                </ui:Card>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

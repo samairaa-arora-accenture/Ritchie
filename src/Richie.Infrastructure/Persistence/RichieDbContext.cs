@@ -7,6 +7,7 @@ using Richie.Domain.Expenses;
 using Richie.Domain.Income;
 using Richie.Domain.Insurance;
 using Richie.Domain.Notifications;
+using Richie.Domain.Settings;
 using Richie.Domain.Vault;
 
 namespace Richie.Infrastructure.Persistence;
@@ -37,6 +38,7 @@ public class RichieDbContext : DbContext
     public DbSet<VaultEntry> VaultEntries => Set<VaultEntry>();
     public DbSet<VaultKey> VaultKeys => Set<VaultKey>();
     public DbSet<InsurancePolicy> InsurancePolicies => Set<InsurancePolicy>();
+    public DbSet<AppSettings> AppSettings => Set<AppSettings>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -89,6 +89,11 @@ public partial class App : System.Windows.Application
                 services.AddTransient<HealthAuditViewModel>();
                 services.AddTransient<DashboardViewModel>();
                 services.AddTransient<ReportsViewModel>();
+                services.AddTransient<SettingsViewModel>();
+                services.AddTransient<ProfileViewModel>();
+                services.AddTransient<ChangePasswordViewModel>();
+                services.AddTransient<Views.Profile.ChangePasswordWindow>();
+                services.AddTransient<Views.Profile.BackupWindow>();
                 services.AddTransient<Views.Assets.AddEditAssetWindow>();
                 services.AddTransient<Views.Assets.AssetDetailsWindow>();
                 services.AddTransient<Views.Assets.SipScheduleWindow>();
@@ -189,6 +194,12 @@ public partial class App : System.Windows.Application
     private void ShowMain(bool firstLogin)
     {
         var inactivity = _host.Services.GetRequiredService<InactivityLockService>();
+
+        // Apply the signed-in user's preferences (theme + auto-lock timeout).
+        Richie.Application.Settings.AppSettingsData settings =
+            _host.Services.GetRequiredService<Richie.Application.Settings.IAppSettingsService>().Get();
+        Richie.UI.ViewModels.SettingsViewModel.ApplyTheme(settings.Theme);
+        inactivity.Timeout = TimeSpan.FromMinutes(settings.SessionLockMinutes);
 
         _main = _host.Services.GetRequiredService<MainWindow>();
         _main.LogoutRequested += (_, _) => ReturnToLogin();
