@@ -1,7 +1,9 @@
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Extensions.DependencyInjection;
+using Richie.Application.Expenses;
 using Richie.UI.ViewModels;
+using Richie.UI.Views.Assets;
 using Richie.UI.Views.Expenses;
 
 namespace Richie.UI.Views.Pages;
@@ -51,6 +53,17 @@ public partial class ExpenseTrackerPage : Page
         window.Owner = Window.GetWindow(this);
         window.ShowDialog();
         Vm.Refresh();
+    }
+
+    private void OnBulkUpload(object sender, RoutedEventArgs e)
+    {
+        var services = ((App)System.Windows.Application.Current).Services;
+        var window = services.GetRequiredService<BulkUploadWindow>();
+        window.Owner = Window.GetWindow(this);
+        window.Upload.Initialize(services.GetRequiredService<IExpenseImportService>(), "Bulk upload expenses");
+        window.ShowDialog();
+        if (window.Upload.ImportedAny)
+            Vm.Refresh();
     }
 
     private void OnApplyFilter(object sender, RoutedEventArgs e) => Vm.ApplyFilter();

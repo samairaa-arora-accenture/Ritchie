@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text;
 using Richie.Application.Assets;
+using Richie.Application.Common;
 using Richie.Infrastructure.Assets;
 using Richie.Infrastructure.Authentication;
 using Richie.Infrastructure.Tests.Helpers;

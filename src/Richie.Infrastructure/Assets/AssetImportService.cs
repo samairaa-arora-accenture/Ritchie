@@ -1,10 +1,10 @@
 using System.Globalization;
-using System.IO;
 using System.Text;
 using ClosedXML.Excel;
-using CsvHelper;
 using Richie.Application.Assets;
+using Richie.Application.Common;
 using Richie.Domain.Assets;
+using Richie.Infrastructure.Common;
 
 namespace Richie.Infrastructure.Assets;
 
@@ -14,9 +14,9 @@ public sealed class AssetImportService : IAssetImportService
 
     public AssetImportService(IAssetService assets) => _assets = assets;
 
-    public ImportResult ImportCsv(Stream csv) => Import(ReadCsv(csv));
+    public ImportResult ImportCsv(Stream csv) => Import(TabularFileReader.ReadCsv(csv));
 
-    public ImportResult ImportExcel(Stream xlsx) => Import(ReadExcel(xlsx));
+    public ImportResult ImportExcel(Stream xlsx) => Import(TabularFileReader.ReadExcel(xlsx));
 
     public byte[] CreateCsvTemplate()
     {
@@ -54,57 +54,6 @@ public sealed class AssetImportService : IAssetImportService
             _assets.Create(input);
 
         return new ImportResult(inputs.Count, rows.Count, errors);
-    }
-
-    private static List<(int, Dictionary<string, string>)> ReadCsv(Stream csv)
-    {
-        var rows = new List<(int, Dictionary<string, string>)>();
-        using var reader = new StreamReader(csv);
-        using var parser = new CsvReader(reader, CultureInfo.InvariantCulture);
-
-        parser.Read();
-        parser.ReadHeader();
-        string[] headers = parser.HeaderRecord ?? [];
-
-        int rowNumber = 1; // header is row 1
-        while (parser.Read())
-        {
-            rowNumber++;
-            var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            foreach (string header in headers)
-                values[header] = parser.GetField(header) ?? string.Empty;
-            rows.Add((rowNumber, values));
-        }
-        return rows;
-    }
-
-    private static List<(int, Dictionary<string, string>)> ReadExcel(Stream xlsx)
-    {
-        var rows = new List<(int, Dictionary<string, string>)>();
-        using var workbook = new XLWorkbook(xlsx);
-        IXLWorksheet sheet = workbook.Worksheet(1);
-        IXLRangeRows? used = sheet.RangeUsed()?.RowsUsed();
-        if (used is null)
-            return rows;
-
-        List<IXLRangeRow> rowList = used.ToList();
-        if (rowList.Count == 0)
-            return rows;
-
-        // Map column number -> header name from the first used row.
-        var headerColumns = new List<(int Column, string Name)>();
-        foreach (IXLCell cell in rowList[0].CellsUsed())
-            headerColumns.Add((cell.Address.ColumnNumber, cell.GetString()));
-
-        for (int i = 1; i < rowList.Count; i++)
-        {
-            IXLRangeRow row = rowList[i];
-            var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            foreach ((int column, string name) in headerColumns)
-                values[name] = row.Worksheet.Cell(row.RowNumber(), column).GetString();
-            rows.Add((row.RowNumber(), values));
-        }
-        return rows;
     }
 
     private static AssetInput? TryBuild(Dictionary<string, string> v, out string? error)

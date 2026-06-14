@@ -20,10 +20,10 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <ui:TitleBar Grid.Row="0" Title="Bulk upload assets" />
+        <ui:TitleBar Grid.Row="0" Title="Bulk upload" />
 
         <StackPanel Grid.Row="1" Margin="24,8,24,16">
-            <ui:TextBlock FontTypography="TitleLarge" Text="Bulk upload" />
+            <ui:TextBlock FontTypography="TitleLarge" Text="{Binding Heading}" />
             <ui:TextBlock Appearance="Secondary" Margin="0,4,0,12" TextWrapping="Wrap"
                           Text="Download a template, fill in one asset per row, then import the CSV or Excel file." />
 

@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Extensions.DependencyInjection;
+using Richie.Application.Assets;
 using Richie.UI.ViewModels;
 using Richie.UI.Views.Assets;
 
@@ -29,8 +30,10 @@ public partial class AssetDocumentationPage : Page
 
     private void OnBulkUpload(object sender, RoutedEventArgs e)
     {
-        var window = ((App)System.Windows.Application.Current).Services.GetRequiredService<BulkUploadWindow>();
+        var services = ((App)System.Windows.Application.Current).Services;
+        var window = services.GetRequiredService<BulkUploadWindow>();
         window.Owner = Window.GetWindow(this);
+        window.Upload.Initialize(services.GetRequiredService<IAssetImportService>(), "Bulk upload assets");
         window.ShowDialog();
         if (window.Upload.ImportedAny)
             Vm.Refresh();
