@@ -77,6 +77,7 @@ public partial class App : System.Windows.Application
                 services.AddTransient<VaultRecoveryViewModel>();
                 services.AddTransient<InsuranceViewModel>();
                 services.AddTransient<AddEditInsuranceViewModel>();
+                services.AddTransient<HealthAuditViewModel>();
                 services.AddTransient<Views.Assets.AddEditAssetWindow>();
                 services.AddTransient<Views.Assets.AssetDetailsWindow>();
                 services.AddTransient<Views.Assets.SipScheduleWindow>();

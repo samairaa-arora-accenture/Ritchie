@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Richie.Application.Abstractions;
 using Richie.Application.Assets;
+using Richie.Application.Audit;
 using Richie.Application.Authentication;
 using Richie.Application.Expenses;
 using Richie.Application.Insurance;
@@ -8,6 +9,7 @@ using Richie.Application.Notifications;
 using Richie.Application.Security;
 using Richie.Application.Storage;
 using Richie.Application.Vault;
+using Richie.Domain.Audit;
 using Richie.Infrastructure.Assets;
 using Richie.Infrastructure.Expenses;
 using Richie.Infrastructure.Insurance;
@@ -58,6 +60,9 @@ public static class DependencyInjection
         services.AddSingleton<IVaultHealthService, VaultHealthService>();
         services.AddSingleton<IVaultImportService, VaultImportService>();
         services.AddSingleton<IInsuranceService, InsuranceService>();
+        services.AddSingleton<IScoringEngine, PlaceholderScoringEngine>();
+        services.AddSingleton<IBenchmarkProvider, AgeBandBenchmarkProvider>();
+        services.AddSingleton<IHealthAuditService, Audit.HealthAuditService>();
         return services;
     }
 }
