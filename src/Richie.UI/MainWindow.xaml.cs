@@ -1,5 +1,6 @@
 using System.Windows;
 using Richie.Application.Authentication;
+using Richie.Application.Notifications;
 using Richie.UI.Services;
 using Richie.UI.Views.Pages;
 using Wpf.Ui.Controls;
@@ -14,6 +15,7 @@ public partial class MainWindow : FluentWindow
 {
     private readonly InactivityLockService _inactivity;
     private readonly TourService _tour;
+    private readonly INotificationService _notifications;
 
     // Placeholder tour copy — final wording is a team open item (PRD §22).
     private static readonly (string Title, string Body)[] TourSteps =
@@ -29,11 +31,13 @@ public partial class MainWindow : FluentWindow
     /// <summary>Raised when the user logs out; App returns to the auth window.</summary>
     public event EventHandler? LogoutRequested;
 
-    public MainWindow(IUserSession session, InactivityLockService inactivity, TourService tour)
+    public MainWindow(IUserSession session, InactivityLockService inactivity, TourService tour,
+        INotificationService notifications)
     {
         InitializeComponent();
         _inactivity = inactivity;
         _tour = tour;
+        _notifications = notifications;
 
         ProfileName.Text = session.FullName ?? "Signed in";
 
@@ -47,7 +51,13 @@ public partial class MainWindow : FluentWindow
         Loaded += (_, _) => RootNavigation.Navigate(typeof(DashboardPage));
     }
 
-    private void OnNotificationsClick(object sender, RoutedEventArgs e) => NotificationsPopup.IsOpen = true;
+    private void OnNotificationsClick(object sender, RoutedEventArgs e)
+    {
+        IReadOnlyList<NotificationDto> recent = _notifications.GetRecent(10);
+        NotificationsList.ItemsSource = recent;
+        NotificationsEmpty.Visibility = recent.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        NotificationsPopup.IsOpen = true;
+    }
 
     private void OnProfileClick(object sender, RoutedEventArgs e) => ProfilePopup.IsOpen = true;
 

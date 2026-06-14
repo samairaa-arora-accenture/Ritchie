@@ -87,6 +87,8 @@
                             <StackPanel Orientation="Horizontal">
                                 <ui:Button Content="View" Padding="8,2" Margin="0,0,4,0"
                                            Tag="{Binding Id}" Click="OnViewAsset" />
+                                <ui:Button Content="SIP" Padding="8,2" Margin="0,0,4,0"
+                                           Tag="{Binding Id}" Click="OnSipAsset" />
                                 <ui:Button Content="Edit" Padding="8,2" Margin="0,0,4,0"
                                            Tag="{Binding Id}" Click="OnEditAsset" />
                                 <ui:Button Content="Delete" Padding="8,2"

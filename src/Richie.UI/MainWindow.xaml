@@ -44,11 +44,21 @@
 
             <Popup x:Name="NotificationsPopup" StaysOpen="False" AllowsTransparency="True"
                    Placement="Bottom" PlacementTarget="{Binding ElementName=NotificationsButton}">
-                <ui:Card Margin="8" Width="300">
+                <ui:Card Margin="8" Width="320">
                     <StackPanel>
                         <ui:TextBlock FontTypography="BodyStrong" Text="Notifications" />
-                        <ui:TextBlock Appearance="Secondary" Margin="0,8,0,0" TextWrapping="Wrap"
-                                      Text="You're all caught up. Alerts and reminders arrive in Phase 9." />
+                        <ui:TextBlock x:Name="NotificationsEmpty" Appearance="Secondary" Margin="0,8,0,0"
+                                      TextWrapping="Wrap" Text="You're all caught up." />
+                        <ItemsControl x:Name="NotificationsList" Margin="0,8,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,4">
+                                        <ui:TextBlock FontTypography="BodyStrong" Text="{Binding Title}" />
+                                        <ui:TextBlock Appearance="Secondary" TextWrapping="Wrap" Text="{Binding Message}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </StackPanel>
                 </ui:Card>
             </Popup>

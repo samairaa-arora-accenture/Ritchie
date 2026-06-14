@@ -58,8 +58,12 @@ public partial class App : System.Windows.Application
                 services.AddTransient<AssetDocumentationViewModel>();
                 services.AddTransient<AddEditAssetViewModel>();
                 services.AddTransient<AssetDetailsViewModel>();
+                services.AddTransient<SipScheduleViewModel>();
                 services.AddTransient<Views.Assets.AddEditAssetWindow>();
                 services.AddTransient<Views.Assets.AssetDetailsWindow>();
+                services.AddTransient<Views.Assets.SipScheduleWindow>();
+
+                services.AddHostedService<Infrastructure.Assets.SipProcessingService>();
             })
             .Build();
     }
@@ -80,13 +84,12 @@ public partial class App : System.Windows.Application
             MessageBox.Show(args.Exception.ToString(), "Richie — startup error");
         };
 
-        await _host.StartAsync();
-
         var splash = new SplashWindow();
         splash.Show();
 
         try
         {
+            // Migrate before the host starts so the SIP background service sees a ready database.
             await Task.Run(() => _host.Services.GetRequiredService<IDatabaseInitializer>().Initialize());
         }
         catch (Exception ex)
@@ -97,6 +100,8 @@ public partial class App : System.Windows.Application
             Shutdown();
             return;
         }
+
+        await _host.StartAsync();
 
         ShowAuth();
         splash.Close();

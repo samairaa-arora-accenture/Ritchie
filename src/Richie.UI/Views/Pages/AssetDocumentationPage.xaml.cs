@@ -41,6 +41,19 @@ public partial class AssetDocumentationPage : Page
             OpenEditor(id);
     }
 
+    private void OnSipAsset(object sender, RoutedEventArgs e)
+    {
+        if (sender is not FrameworkElement { Tag: Guid id })
+            return;
+
+        string assetName = Vm.Items.FirstOrDefault(a => a.Id == id)?.Name ?? "Asset";
+        var window = ((App)System.Windows.Application.Current).Services.GetRequiredService<SipScheduleWindow>();
+        window.Owner = Window.GetWindow(this);
+        window.Schedule.Initialize(id, assetName);
+        window.ShowDialog();
+        Vm.Refresh();
+    }
+
     private void OnDeleteAsset(object sender, RoutedEventArgs e)
     {
         if (sender is not FrameworkElement { Tag: Guid id })
