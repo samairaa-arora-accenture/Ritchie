@@ -3,9 +3,26 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:controls="clr-namespace:Richie.UI.Controls"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       mc:Ignorable="d"
       Title="Financial Health Audit">
-    <controls:ModulePlaceholder Title="Financial Health Audit"
-                                Description="Portfolio health score, risk meter, diversification and age-based benchmark analysis. Arrives in Phase 6." />
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <ui:TextBlock FontTypography="TitleLarge" Text="Financial Health Audit" VerticalAlignment="Center" />
+            <ui:Button HorizontalAlignment="Right" Content="Manage insurance" Click="OnManageInsurance" />
+        </Grid>
+
+        <ui:Card Grid.Row="1" VerticalAlignment="Top">
+            <StackPanel>
+                <ui:TextBlock FontTypography="BodyStrong" Text="Health score, risk meter &amp; benchmarks" />
+                <ui:TextBlock Appearance="Secondary" TextWrapping="Wrap" Margin="0,6,0,0"
+                              Text="Portfolio health score, Riskometer, diversification and age-based benchmark analysis arrive next. Insurance &amp; protection is managed here (its own module — never counted as an investable asset); coverage gaps will feed this audit." />
+            </StackPanel>
+        </ui:Card>
+    </Grid>
 </Page>

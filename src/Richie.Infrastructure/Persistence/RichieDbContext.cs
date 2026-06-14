@@ -4,6 +4,7 @@ using Richie.Domain.Assets;
 using Richie.Domain.Auditing;
 using Richie.Domain.Authentication;
 using Richie.Domain.Expenses;
+using Richie.Domain.Insurance;
 using Richie.Domain.Notifications;
 using Richie.Domain.Vault;
 
@@ -32,6 +33,7 @@ public class RichieDbContext : DbContext
     public DbSet<Notification> Notifications => Set<Notification>();
     public DbSet<VaultEntry> VaultEntries => Set<VaultEntry>();
     public DbSet<VaultKey> VaultKeys => Set<VaultKey>();
+    public DbSet<InsurancePolicy> InsurancePolicies => Set<InsurancePolicy>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
