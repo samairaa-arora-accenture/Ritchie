@@ -10,5 +10,6 @@ public sealed class VaultKeyConfiguration : IEntityTypeConfiguration<VaultKey>
     {
         builder.HasKey(k => k.UserId);
         builder.Property(k => k.WrappedDek).HasMaxLength(200);
+        builder.Property(k => k.RecoveryWrappedDek).HasMaxLength(200);
     }
 }

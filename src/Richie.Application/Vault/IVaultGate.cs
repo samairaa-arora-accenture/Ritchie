@@ -1,3 +1,6 @@
+using Richie.Application.Authentication;
+using Richie.Domain.Authentication;
+
 namespace Richie.Application.Vault;
 
 /// <summary>
@@ -26,6 +29,27 @@ public interface IVaultGate
 
     /// <summary>Drop the in-memory key — the next access must re-authenticate.</summary>
     void Lock();
+
+    /// <summary>Change the master password: verifies the current one, then re-wraps the data key
+    /// under a key derived from the new password. Cheap (credentials are untouched). Stays unlocked.</summary>
+    VaultUnlockResult ChangeMasterPassword(string currentPassword, string newPassword);
+
+    /// <summary>Set a new master password using the already-unlocked key (recovery flow — the user
+    /// doesn't know the old password). Requires the vault to be unlocked.</summary>
+    VaultUnlockResult SetMasterPassword(string newPassword);
+
+    /// <summary>True once security-question recovery has been enabled for the current user.</summary>
+    bool IsRecoveryEnabled();
+
+    /// <summary>The current user's chosen security questions (to present for recovery setup/unlock).</summary>
+    IReadOnlyList<SecurityQuestion> GetRecoveryQuestions();
+
+    /// <summary>Enable recovery: verifies the security answers, then wraps the data key under a key
+    /// derived from them so the vault can later be unlocked with the answers. Requires unlocked.</summary>
+    VaultUnlockResult EnableRecovery(IReadOnlyList<SecurityAnswerInput> answers);
+
+    /// <summary>Unlock the vault by answering the security questions (recovery path).</summary>
+    VaultUnlockResult UnlockWithAnswers(IReadOnlyList<SecurityAnswerInput> answers);
 
     /// <summary>Encrypt a field value with the unlocked vault key. Throws if locked.</summary>
     string Encrypt(string plaintext);

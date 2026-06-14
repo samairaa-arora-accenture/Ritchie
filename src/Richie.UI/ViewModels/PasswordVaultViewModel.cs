@@ -20,6 +20,7 @@ public partial class PasswordVaultViewModel : ObservableObject
     [ObservableProperty] private bool _isSetupMode;
     [ObservableProperty] private string _masterPassword = string.Empty;
     [ObservableProperty] private string? _error;
+    [ObservableProperty] private bool _recoveryAvailable;
     [ObservableProperty] private ObservableCollection<VaultEntryRowViewModel> _items = [];
 
     private const string AllCategories = "All categories";
@@ -49,6 +50,7 @@ public partial class PasswordVaultViewModel : ObservableObject
         MasterPassword = string.Empty;
         Error = null;
         IsSetupMode = !_gate.IsConfigured();
+        RecoveryAvailable = !IsSetupMode && _gate.IsRecoveryEnabled();
         SetUnlocked(false);
         Items = [];
         SearchText = string.Empty;
@@ -86,6 +88,15 @@ public partial class PasswordVaultViewModel : ObservableObject
 
     /// <summary>Decrypt a credential for inline reveal/copy — caller must have re-authenticated.</summary>
     public string? RevealPassword(Guid id) => _vault.RevealPassword(id);
+
+    /// <summary>Transition to the unlocked state after a recovery unlock (gate is already unlocked).</summary>
+    public void MarkUnlocked()
+    {
+        MasterPassword = string.Empty;
+        Error = null;
+        SetUnlocked(true);
+        Reload();
+    }
 
     public void Delete(Guid id)
     {

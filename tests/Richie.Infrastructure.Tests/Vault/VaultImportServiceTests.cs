@@ -21,7 +21,8 @@ public sealed class VaultImportServiceTests : IDisposable
     public VaultImportServiceTests()
     {
         _session.SignIn(Guid.NewGuid(), "Tester");
-        _gate = new VaultGate(_db, _session, new Pbkdf2KeyDerivation(), new AesGcmFieldCipher(), _clock);
+        _gate = new VaultGate(_db, _session, new Pbkdf2KeyDerivation(), new AesGcmFieldCipher(),
+            new Argon2PasswordHasher(), _clock);
         _gate.SetupMasterPassword("master-pass-1");
         _vault = new VaultService(_db, _session, _gate, _clock);
         _sut = new VaultImportService(_vault);

@@ -22,5 +22,11 @@ public class VaultKey
     /// <summary>The DEK encrypted under the KEK (AES-256-GCM base64 payload).</summary>
     public string WrappedDek { get; set; } = string.Empty;
 
+    /// <summary>Optional recovery: PBKDF2 salt for a KEK derived from the user's security answers.</summary>
+    public byte[]? RecoverySalt { get; set; }
+
+    /// <summary>Optional recovery: the same DEK wrapped under the security-answer KEK. Null = recovery off.</summary>
+    public string? RecoveryWrappedDek { get; set; }
+
     public DateTime CreatedUtc { get; set; }
 }

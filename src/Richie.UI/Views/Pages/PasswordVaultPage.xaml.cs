@@ -36,6 +36,23 @@ public partial class PasswordVaultPage : Page
 
     private void OnSubmit(object sender, RoutedEventArgs e) => Vm.Submit();
 
+    private void OnForgotMasterPassword(object sender, RoutedEventArgs e)
+    {
+        var window = ((App)System.Windows.Application.Current).Services
+            .GetRequiredService<VaultRecoveryWindow>();
+        window.Owner = Window.GetWindow(this);
+        if (window.ShowDialog() == true)
+            Vm.MarkUnlocked();   // recovered + new master password set; vault is now unlocked
+    }
+
+    private void OnVaultSecurity(object sender, RoutedEventArgs e)
+    {
+        var window = ((App)System.Windows.Application.Current).Services
+            .GetRequiredService<VaultSecurityWindow>();
+        window.Owner = Window.GetWindow(this);
+        window.ShowDialog();
+    }
+
     private void OnLock(object sender, RoutedEventArgs e)
     {
         Vm.ResetToLocked();

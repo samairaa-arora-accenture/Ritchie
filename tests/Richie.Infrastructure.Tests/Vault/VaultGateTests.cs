@@ -17,7 +17,8 @@ public sealed class VaultGateTests : IDisposable
     public VaultGateTests()
     {
         _session.SignIn(Guid.NewGuid(), "Tester");
-        _gate = new VaultGate(_db, _session, new Pbkdf2KeyDerivation(), new AesGcmFieldCipher(), _clock);
+        _gate = new VaultGate(_db, _session, new Pbkdf2KeyDerivation(), new AesGcmFieldCipher(),
+            new Argon2PasswordHasher(), _clock);
     }
 
     [Fact]
@@ -73,6 +74,41 @@ public sealed class VaultGateTests : IDisposable
         _gate.Lock();
         Assert.Throws<InvalidOperationException>(() => _gate.Decrypt(cipher));
         Assert.Throws<InvalidOperationException>(() => _gate.Encrypt("x"));
+    }
+
+    [Fact]
+    public void ChangeMasterPassword_WrongCurrent_Fails()
+    {
+        _gate.SetupMasterPassword("master-pass-1");
+
+        VaultUnlockResult result = _gate.ChangeMasterPassword("wrong-current", "master-pass-2");
+
+        Assert.Equal(VaultUnlockStatus.IncorrectPassword, result.Status);
+    }
+
+    [Fact]
+    public void ChangeMasterPassword_OldStopsWorking_NewWorks_AndDataSurvives()
+    {
+        _gate.SetupMasterPassword("master-pass-1");
+        string cipher = _gate.Encrypt("a-secret");
+
+        VaultUnlockResult result = _gate.ChangeMasterPassword("master-pass-1", "master-pass-2");
+        Assert.True(result.IsSuccess);
+        Assert.Equal("a-secret", _gate.Decrypt(cipher)); // key preserved, stays unlocked
+
+        _gate.Lock();
+        Assert.False(_gate.Unlock("master-pass-1").IsSuccess);   // old password no longer works
+        Assert.True(_gate.Unlock("master-pass-2").IsSuccess);    // new one does
+        Assert.Equal("a-secret", _gate.Decrypt(cipher));         // same data key underneath
+    }
+
+    [Fact]
+    public void SetMasterPassword_RequiresUnlocked()
+    {
+        _gate.SetupMasterPassword("master-pass-1");
+        _gate.Lock();
+
+        Assert.Equal(VaultUnlockStatus.ValidationFailed, _gate.SetMasterPassword("master-pass-2").Status);
     }
 
     public void Dispose() => _db.Dispose();
