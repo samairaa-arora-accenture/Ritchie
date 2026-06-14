@@ -144,5 +144,28 @@ public sealed class AssetServiceTests : IDisposable
         Assert.Contains(_sut.GetAssets(), a => a.Type == AssetType.GoldJewellery && a.IsExcludedFromPortfolio);
     }
 
+    [Fact]
+    public void SetPortfolioExclusion_TogglesJewelleryInOrOutOfTotals()
+    {
+        _sut.Create(MutualFund(invested: 1000, current: 1000));
+        Guid jewelleryId = _sut.Create(Jewellery(current: 5000, excluded: false));
+
+        Assert.Equal(6000m, _sut.GetPortfolioSummary().TotalCurrentValue);
+
+        Assert.True(_sut.SetPortfolioExclusion(jewelleryId, excluded: true));
+        Assert.Equal(1000m, _sut.GetPortfolioSummary().TotalCurrentValue);
+
+        Assert.True(_sut.SetPortfolioExclusion(jewelleryId, excluded: false));
+        Assert.Equal(6000m, _sut.GetPortfolioSummary().TotalCurrentValue);
+    }
+
+    [Fact]
+    public void SetPortfolioExclusion_IsNoOpForNonJewellery()
+    {
+        Guid mfId = _sut.Create(MutualFund());
+
+        Assert.False(_sut.SetPortfolioExclusion(mfId, excluded: true));
+    }
+
     public void Dispose() => _db.Dispose();
 }

@@ -16,6 +16,10 @@ public interface IAssetService
     bool Update(Guid id, AssetInput input);
     bool Delete(Guid id);
 
+    /// <summary>Include/exclude a gold-jewellery asset from portfolio valuation (PRD §6.10).
+    /// No effect for other asset types. Returns false if not found / not jewellery.</summary>
+    bool SetPortfolioExclusion(Guid id, bool excluded);
+
     /// <summary>Totals + allocation; excluded gold jewellery is omitted (PRD §6.10).</summary>
     PortfolioSummary GetPortfolioSummary();
 }

@@ -91,6 +91,23 @@ public sealed class AssetService : IAssetService
         return true;
     }
 
+    public bool SetPortfolioExclusion(Guid id, bool excluded)
+    {
+        Guid userId = UserId;
+        using RichieDbContext db = _factory.Create();
+        Asset? asset = db.Assets.FirstOrDefault(a => a.Id == id && a.UserId == userId);
+        if (asset is null || asset.Type != AssetType.GoldJewellery)
+            return false;
+
+        asset.IsExcludedFromPortfolio = excluded;
+        asset.UpdatedUtc = _clock.UtcNow;
+        string verb = excluded ? "Excluded" : "Included";
+        AuditWriter.Add(db, userId, asset.UpdatedUtc, Module, AuditAction.Update, nameof(Asset), asset.Id,
+            $"{verb} '{asset.Name}' {(excluded ? "from" : "in")} portfolio valuation.");
+        db.SaveChanges();
+        return true;
+    }
+
     public PortfolioSummary GetPortfolioSummary()
     {
         Guid userId = UserId;
