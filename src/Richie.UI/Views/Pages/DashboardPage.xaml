@@ -17,20 +17,33 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="24">
         <StackPanel>
             <!-- Hero greeting: date · greeting · portfolio insight · mini-calendar · live clock -->
-            <ui:Card Margin="0,0,0,12">
-                <Grid>
+            <ui:Card
+            Margin="0,0,0,10"
+            Padding="28"
+            CornerRadius="18">
+                <Grid Margin="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
                         <ui:TextBlock Appearance="Secondary" FontTypography="Caption" Text="{Binding HeroDateText}" />
-                        <ui:TextBlock FontTypography="TitleLarge" Foreground="White" Margin="0,2,0,0" Text="{Binding GreetingText}" />
-                        <ui:TextBlock Appearance="Secondary" TextWrapping="Wrap" Margin="0,6,12,0"
+                        <ui:TextBlock
+                        FontSize="32"
+                        FontWeight="SemiBold"
+                        Foreground="{DynamicResource TextFillColorPrimaryBrush}" Margin="0,2,0,0" Text="{Binding GreetingText}" />
+                        <ui:TextBlock
+                        Appearance="Secondary"
+                        FontSize="15"
+                        TextWrapping="Wrap"
+                        Margin="0,10,20,0"
                                       Text="{Binding PortfolioInsightText}" />
                     </StackPanel>
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right">
-                        <ui:TextBlock x:Name="ClockText" FontTypography="TitleLarge" Foreground="White" HorizontalAlignment="Right" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" MaxWidth="650" HorizontalAlignment="Right">
+                        <ui:TextBlock
+                        x:Name="ClockText"
+                        FontSize="30"
+                        FontWeight="Bold" FontTypography="TitleLarge" Foreground="White" HorizontalAlignment="Right" />
                         <ui:TextBlock Appearance="Secondary" FontTypography="Caption"
                                       HorizontalAlignment="Right" Text="Local time" />
                     </StackPanel>
