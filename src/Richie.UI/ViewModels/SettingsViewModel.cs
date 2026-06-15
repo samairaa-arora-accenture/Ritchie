@@ -115,7 +115,7 @@ public partial class SettingsViewModel : ObservableObject
             theme = ApplicationTheme.Light;
 
         // Use a professional blue/teal accent instead of red for modern UI
-        var accent = (Color)ColorConverter.ConvertFromString("#3B82F6")!; // Professional blue
+        var accent = (Color)ColorConverter.ConvertFromString("#5B8DEF")!; // Professional Blue (secondary accent)
         ApplicationAccentColorManager.Apply(accent, theme);
     }
 

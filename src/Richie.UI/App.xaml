@@ -11,11 +11,36 @@
                 <ResourceDictionary Source="Resources/DarkModeTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- Brand semantic brushes (status triad). green = good, amber = attention, red = critical. -->
-            <SolidColorBrush x:Key="BrandSuccessBrush" Color="#1FA56C" />
-            <SolidColorBrush x:Key="BrandWarningBrush" Color="#DE9326" />
-            <SolidColorBrush x:Key="BrandDangerBrush" Color="#CE2E20" />
-            <SolidColorBrush x:Key="BrandPrimaryBrush" Color="#3B82F6" />
+            <!-- Brand semantic brushes (status triad). Updated to match product palette. -->
+            <SolidColorBrush x:Key="BrandPrimaryBrush" Color="#E6A756" /> <!-- Soft Golden Orange (primary accent) -->
+            <SolidColorBrush x:Key="BrandSecondaryBrush" Color="#5B8DEF" /> <!-- Professional Blue (secondary accent) -->
+            <SolidColorBrush x:Key="BrandSuccessBrush" Color="#57B894" /> <!-- Success (profit/positive) -->
+            <SolidColorBrush x:Key="BrandWarningBrush" Color="#F3C969" /> <!-- Warning (pending/medium risk) -->
+            <SolidColorBrush x:Key="BrandDangerBrush" Color="#D96C6C" /> <!-- Error/Critical -->
+
+            <!-- Application text & background tokens (light mode overrides) -->
+            <SolidColorBrush x:Key="TextFillColorPrimaryBrush" Color="#1F2937" />
+            <SolidColorBrush x:Key="TextFillColorSecondaryBrush" Color="#6B7280" />
+            <SolidColorBrush x:Key="TextFillColorDisabledBrush" Color="#9CA3AF" />
+
+            <SolidColorBrush x:Key="SolidBackgroundFillColorBaseBrush" Color="#F8F8F6" /> <!-- Soft ivory app background -->
+            <SolidColorBrush x:Key="ControlFillColorDefaultBrush" Color="#FFFFFF" /> <!-- Card / control background (white) -->
+            <SolidColorBrush x:Key="AlternateRowBrush" Color="#F4F4F5" />
+
+            <!-- Chart palette (use these brushes for chart series) -->
+            <SolidColorBrush x:Key="ChartColor1" Color="#5B8DEF" />
+            <SolidColorBrush x:Key="ChartColor2" Color="#E6A756" />
+            <SolidColorBrush x:Key="ChartColor3" Color="#57B894" />
+            <SolidColorBrush x:Key="ChartColor4" Color="#9B7EDE" />
+            <SolidColorBrush x:Key="ChartColor5" Color="#56B7B1" />
+            <SolidColorBrush x:Key="ChartColor6" Color="#F3C969" />
+            <SolidColorBrush x:Key="ChartColor7" Color="#8A8A8A" />
+
+            <!-- Richie AI card tokens (standout card) -->
+            <SolidColorBrush x:Key="RichieAICardBackgroundBrush" Color="#F7F2FF" />
+            <SolidColorBrush x:Key="RichieAICardBorderBrush" Color="#D9C7FF" />
+            <SolidColorBrush x:Key="RichieAICardIconBrush" Color="#9B7EDE" />
+            <SolidColorBrush x:Key="RichieAICardTitleBrush" Color="#6D28D9" />
 
             <!-- Soft-gold app background (gentle vertical gradient; white cards sit on top). -->
             <LinearGradientBrush x:Key="BrandBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
@@ -34,8 +59,8 @@
             <SolidColorBrush x:Key="DarkModeHoverBrush" Color="#3A3D48" />
 
             <!-- Professional Button Colors (Blue/Teal instead of Red) -->
-            <SolidColorBrush x:Key="DarkModeButtonPrimaryBrush" Color="#3B82F6" />
-            <SolidColorBrush x:Key="DarkModeButtonPrimaryHoverBrush" Color="#2563EB" />
+            <SolidColorBrush x:Key="DarkModeButtonPrimaryBrush" Color="#E6A756" />
+            <SolidColorBrush x:Key="DarkModeButtonPrimaryHoverBrush" Color="#C99246" />
             <SolidColorBrush x:Key="DarkModeButtonSecondaryBrush" Color="#6B7280" />
             <SolidColorBrush x:Key="DarkModeButtonSecondaryHoverBrush" Color="#4B5563" />
 

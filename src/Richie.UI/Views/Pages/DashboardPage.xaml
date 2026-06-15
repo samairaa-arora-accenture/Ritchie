@@ -19,8 +19,7 @@
             <!-- Hero greeting: date · greeting · portfolio insight · mini-calendar · live clock -->
             <ui:Card
             Margin="0,0,0,8"
-            Padding="24"
-            CornerRadius="20">
+            Padding="24">
                 <Grid Margin="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -53,8 +52,7 @@
             <!-- Summary cards -->
             <UniformGrid Rows="1" Margin="0,0,0,8">
                 <ui:Card Margin="0,0,8,0"
-                Padding="16"
-                CornerRadius="16">
+                Padding="16">
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Symbol="Wallet24" FontSize="22" VerticalAlignment="Top" Margin="0,2,10,0"
                                        Foreground="{StaticResource BrandPrimaryBrush}" />
@@ -65,8 +63,7 @@
                     </StackPanel>
                 </ui:Card>
                 <ui:Card Margin="0,0,8,0"
-                Padding="16"
-                CornerRadius="16">
+                Padding="16">
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Symbol="Savings24" FontSize="22" VerticalAlignment="Top" Margin="0,2,10,0"
                                        Foreground="{StaticResource BrandPrimaryBrush}" />
@@ -77,8 +74,7 @@
                     </StackPanel>
                 </ui:Card>
                 <ui:Card Margin="0,0,8,0"
-                Padding="16"
-                CornerRadius="16">
+                Padding="16">
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Symbol="ReceiptMoney24" FontSize="22" VerticalAlignment="Top" Margin="0,2,10,0"
                                        Foreground="{StaticResource BrandPrimaryBrush}" />
@@ -89,8 +85,7 @@
                     </StackPanel>
                 </ui:Card>
                 <ui:Card Margin="0,0,8,0"
-                Padding="16"
-                CornerRadius="16">
+                Padding="16">
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Symbol="DataTrending24" FontSize="22" VerticalAlignment="Top" Margin="0,2,10,0"
                                        Foreground="{Binding ProfitLossBrush}" />
@@ -102,8 +97,7 @@
                     </StackPanel>
                 </ui:Card>
                 <ui:Card
-                Padding="16"
-                CornerRadius="16">
+                Padding="16">
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Symbol="HeartPulse24" FontSize="22" VerticalAlignment="Top" Margin="0,2,10,0"
                                        Foreground="{Binding HealthBrush}" />
@@ -122,7 +116,7 @@
             <!-- Quick actions -->
             <!-- Quick Actions -->
             <UniformGrid Columns="4" Margin="0,0,0,10">
-                <ui:Card Margin="0,0,8,0" CornerRadius="16">
+                <ui:Card Margin="0,0,8,0" >
                     <StackPanel HorizontalAlignment="Center" Margin="8">
                         <ui:SymbolIcon Symbol="Add24"
                            FontSize="30"
@@ -138,7 +132,7 @@
                             Click="OnAddAsset"/>
                     </StackPanel>
                 </ui:Card>
-                <ui:Card Margin="0,0,8,0" CornerRadius="16">
+                <ui:Card Margin="0,0,8,0">
                     <StackPanel HorizontalAlignment="Center" Margin="8">
                         <ui:SymbolIcon Symbol="ReceiptMoney24"
                            FontSize="30"
@@ -154,7 +148,7 @@
                             Click="OnAddExpense"/>
                     </StackPanel>
                 </ui:Card>
-                <ui:Card Margin="0,0,8,0" CornerRadius="16">
+                <ui:Card Margin="0,0,8,0">
                     <StackPanel HorizontalAlignment="Center" Margin="8">
                         <ui:SymbolIcon Symbol="Key24"
                            FontSize="30"
@@ -170,7 +164,7 @@
                             Click="OnAddPassword"/>
                     </StackPanel>
                 </ui:Card>
-                <ui:Card CornerRadius="16">
+                <ui:Card>
                     <StackPanel HorizontalAlignment="Center" Margin="8">
                         <ui:SymbolIcon Symbol="DocumentArrowUp24"
                            FontSize="30"
@@ -289,7 +283,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Margin="0,0,8,0" Padding="16" CornerRadius="14"
+                                <Border Margin="0,0,8,0" Padding="16"
                                         Background="{DynamicResource ControlFillColorDefaultBrush}">
                                     <DockPanel>
                                         <ui:Button DockPanel.Dock="Bottom" HorizontalAlignment="Left" Margin="0,8,0,0"

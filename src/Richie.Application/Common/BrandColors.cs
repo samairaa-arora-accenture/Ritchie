@@ -8,27 +8,27 @@ namespace Richie.Application.Common;
 /// </summary>
 public static class BrandColors
 {
-    public const string Primary = "#BE3A2F";   // Richie Red
-    public const string Secondary = "#D89A45"; // Golden Amber
-    public const string Accent = "#E2BE74";    // Soft Gold
+    public const string Primary = "#E6A756";   // Soft Golden Orange (application primary accent)
+    public const string Secondary = "#5B8DEF"; // Professional Blue (secondary accent)
+    public const string Accent = "#9B7EDE";    // Investment purple (accent)
 
     // Status triad (consistent app-wide): green = good, amber = needs attention, red = critical.
-    public const string Success = "#1FA56C";
-    public const string Warning = "#DE9326";
-    public const string Danger = "#CE2E20";
+    public const string Success = "#57B894";
+    public const string Warning = "#F3C969";
+    public const string Danger = "#D96C6C";
 
-    /// <summary>Distinct, colour-blind-safe categorical series colours.</summary>
+    /// <summary>Distinct, colour-blind-safe categorical series colours (dashboard order).</summary>
     public static readonly IReadOnlyList<string> Categorical =
     [
-        "#BE3A2F", // Richie Red
-        "#D89A45", // Gold
-        "#4FA87A", // Emerald
-        "#3E86C6", // Blue
-        "#CC7DAC", // Rose
-        "#6E59A5", // Violet
-        "#2A9D8F", // Teal
-        "#B5651D", // Sienna
-        "#8E7CC3", // Lavender
-        "#5F8B4C"  // Olive
+        "#5B8DEF", // Equity / Professional Blue
+        "#E6A756", // Mutual Fund / Soft Golden Orange
+        "#57B894", // SGB / Green
+        "#9B7EDE", // Digital Gold / Purple
+        "#56B7B1", // Real Estate / Teal
+        "#F3C969", // Jewellery / Soft Yellow
+        "#8A8A8A", // Guaranteed Plans / Gray
+        "#C19C6B", // filler
+        "#7F6FAD", // filler
+        "#5A8A6B"  // filler
     ];
 }

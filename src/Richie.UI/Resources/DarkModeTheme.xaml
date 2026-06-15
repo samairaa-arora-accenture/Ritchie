@@ -21,12 +21,12 @@
     <Color x:Key="DarkPlaceholder">#808080</Color>     <!-- Placeholder text -->
 
     <!-- Accent & Status Colors -->
-    <Color x:Key="DarkAccent">#3B82F6</Color>           <!-- Professional Blue -->
-    <Color x:Key="DarkAccentHover">#2563EB</Color>      <!-- Darker Blue on hover -->
-    <Color x:Key="DarkAccentActive">#1D4ED8</Color>     <!-- Active/pressed -->
-    <Color x:Key="DarkSuccess">#22C55E</Color>          <!-- Green success -->
-    <Color x:Key="DarkWarning">#F59E0B</Color>          <!-- Amber warning -->
-    <Color x:Key="DarkDanger">#EF4444</Color>           <!-- Red danger (muted) -->
+    <Color x:Key="DarkAccent">#5B8DEF</Color>           <!-- Professional Blue (secondary accent for charts) -->
+    <Color x:Key="DarkAccentHover">#4A77E0</Color>      <!-- Hover for professional blue -->
+    <Color x:Key="DarkAccentActive">#3F6BD6</Color>     <!-- Active/pressed -->
+    <Color x:Key="DarkSuccess">#57B894</Color>          <!-- Success (profit/positive) -->
+    <Color x:Key="DarkWarning">#F3C969</Color>          <!-- Soft warning -->
+    <Color x:Key="DarkDanger">#D96C6C</Color>           <!-- Error/Critical -->
 
     <!-- Convert colors to brushes for easy reuse -->
     <SolidColorBrush x:Key="DarkBgBrush" Color="{StaticResource DarkBg}" />
