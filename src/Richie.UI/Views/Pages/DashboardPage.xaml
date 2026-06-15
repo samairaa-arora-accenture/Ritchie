@@ -120,12 +120,73 @@
             </UniformGrid>
 
             <!-- Quick actions -->
-            <UniformGrid Rows="1" Columns="4" Margin="0,0,0,8">
-                <ui:Button Content="Add asset" Appearance="Primary" Margin="0,0,8,8" Click="OnAddAsset" />
-                <ui:Button Content="Add expense" Margin="0,0,8,8" Click="OnAddExpense" />
-                <ui:Button Content="Add password" Margin="0,0,8,8" Click="OnAddPassword" />
-                <ui:Button Content="Generate report" Margin="0,0,0,0" Click="OnGenerateReport" />
-            </UniformGrid>
+            <!-- Quick Actions -->
+            <UniformGrid Columns="4" Margin="0,0,0,10">
+                <ui:Card Margin="0,0,8,0" CornerRadius="16">
+                    <StackPanel HorizontalAlignment="Center" Margin="8">
+                        <ui:SymbolIcon Symbol="Add24"
+                           FontSize="30"
+                           Foreground="{StaticResource BrandPrimaryBrush}" />
+                        <ui:TextBlock
+                            Margin="0,8,0,0"
+                            HorizontalAlignment="Center"
+                            FontTypography="BodyStrong"
+                            Text="Add Asset"/>
+                        <ui:Button
+                            Margin="0,8,0,0"
+                            Content="Open"
+                            Click="OnAddAsset"/>
+                    </StackPanel>
+                </ui:Card>
+                <ui:Card Margin="0,0,8,0" CornerRadius="16">
+                    <StackPanel HorizontalAlignment="Center" Margin="8">
+                        <ui:SymbolIcon Symbol="ReceiptMoney24"
+                           FontSize="30"
+                           Foreground="{StaticResource BrandSuccessBrush}" />
+                        <ui:TextBlock
+                            Margin="0,8,0,0"
+                            HorizontalAlignment="Center"
+                            FontTypography="BodyStrong"
+                            Text="Add Expense"/>
+                        <ui:Button
+                            Margin="0,8,0,0"
+                            Content="Open"
+                            Click="OnAddExpense"/>
+                    </StackPanel>
+                </ui:Card>
+                <ui:Card Margin="0,0,8,0" CornerRadius="16">
+                    <StackPanel HorizontalAlignment="Center" Margin="8">
+                        <ui:SymbolIcon Symbol="Key24"
+                           FontSize="30"
+                           Foreground="{StaticResource BrandWarningBrush}" />
+                        <ui:TextBlock
+                            Margin="0,8,0,0"
+                            HorizontalAlignment="Center"
+                            FontTypography="BodyStrong"
+                            Text="Password Vault"/>
+                        <ui:Button
+                            Margin="0,8,0,0"
+                            Content="Open"
+                            Click="OnAddPassword"/>
+                    </StackPanel>
+                </ui:Card>
+                <ui:Card CornerRadius="16">
+                    <StackPanel HorizontalAlignment="Center" Margin="8">
+                        <ui:SymbolIcon Symbol="DocumentArrowUp24"
+                           FontSize="30"
+                           Foreground="{StaticResource BrandPrimaryBrush}" />
+                        <ui:TextBlock
+                            Margin="0,8,0,0"
+                            HorizontalAlignment="Center"
+                            FontTypography="BodyStrong"
+                            Text="Generate Report"/>
+                                    <ui:Button
+                                        Margin="0,8,0,0"
+                                        Content="Open"
+                                        Click="OnGenerateReport"/>
+                                </StackPanel>
+                            </ui:Card>
+                        </UniformGrid>
 
             <!-- Charts row 1: Asset allocation + Income vs Expense -->
             <Grid Margin="0,0,0,8">
