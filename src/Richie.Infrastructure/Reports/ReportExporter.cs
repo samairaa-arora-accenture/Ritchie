@@ -40,6 +40,8 @@ public sealed partial class ReportExporter : IReportExporter
                             col.Item().Text(line);
                         if (section.Table is { } table)
                             col.Item().Element(c => RenderTable(c, table));
+                        if (section.Chart is { Points.Count: > 0 } chart)
+                            col.Item().PaddingTop(6).MaxWidth(380).Image(RenderChartImage(chart));
                     }
                 });
 

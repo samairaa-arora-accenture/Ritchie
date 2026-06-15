@@ -5,8 +5,17 @@ public enum ReportType { Assets, Expenses, Vault, FullPortfolio, Insurance }
 /// <summary>A simple table for a report section.</summary>
 public sealed record ReportTable(IReadOnlyList<string> Columns, IReadOnlyList<IReadOnlyList<string>> Rows);
 
-/// <summary>One section of a report — free text lines and/or a table.</summary>
-public sealed record ReportSection(string Heading, IReadOnlyList<string> Lines, ReportTable? Table = null);
+public enum ReportChartKind { Pie, Column }
+
+/// <summary>One labelled data point for a report chart.</summary>
+public sealed record ReportChartPoint(string Label, double Value);
+
+/// <summary>A chart specification for a section — pure data; the exporter renders it to an image.</summary>
+public sealed record ReportChart(ReportChartKind Kind, IReadOnlyList<ReportChartPoint> Points);
+
+/// <summary>One section of a report — free text lines and/or a table and/or a chart.</summary>
+public sealed record ReportSection(
+    string Heading, IReadOnlyList<string> Lines, ReportTable? Table = null, ReportChart? Chart = null);
 
 /// <summary>A fully-built report, ready to render to PDF/PPTX.</summary>
 public sealed record ReportContent(

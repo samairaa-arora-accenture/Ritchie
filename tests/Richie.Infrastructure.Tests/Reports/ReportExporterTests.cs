@@ -15,6 +15,59 @@ public sealed class ReportExporterTests
             new ReportSection("Notes", ["Just text, no table."])
         ]);
 
+    private static ReportContent SampleWithCharts() => new(
+        "Charted Report", new DateTime(2026, 6, 15, 9, 0, 0, DateTimeKind.Utc), "All data",
+        [
+            new ReportSection("Allocation", [],
+                new ReportTable(["Type", "Value"], [["Equity", "600"], ["Debt", "400"]]),
+                new ReportChart(ReportChartKind.Pie,
+                    [new ReportChartPoint("Equity", 600), new ReportChartPoint("Debt", 400)])),
+            new ReportSection("Monthly trend", [],
+                new ReportTable(["Month", "Spend"], [["Apr", "100"], ["May", "250"], ["Jun", "180"]]),
+                new ReportChart(ReportChartKind.Column,
+                    [new ReportChartPoint("Apr", 100), new ReportChartPoint("May", 250), new ReportChartPoint("Jun", 180)]))
+        ]);
+
+    [Theory]
+    [InlineData(ReportChartKind.Pie)]
+    [InlineData(ReportChartKind.Column)]
+    public void RenderChartImage_ProducesANonTrivialPng(ReportChartKind kind)
+    {
+        var chart = new ReportChart(kind,
+            [new ReportChartPoint("A", 30), new ReportChartPoint("B", 50), new ReportChartPoint("C", 20)]);
+
+        byte[] png = ReportExporter.RenderChartImage(chart);
+
+        // PNG magic header: 0x89 'P' 'N' 'G'.
+        Assert.True(png.Length > 2000, $"expected a drawn chart, got {png.Length} bytes");
+        Assert.Equal(new byte[] { 0x89, 0x50, 0x4E, 0x47 }, png[..4]);
+    }
+
+    [Fact]
+    public void ToPdf_WithCharts_ProducesALargerPdf()
+    {
+        byte[] plain = new ReportExporter().ToPdf(Sample());
+        byte[] charted = new ReportExporter().ToPdf(SampleWithCharts());
+
+        Assert.Equal("%PDF", Encoding.ASCII.GetString(charted, 0, 4));
+        Assert.True(charted.Length > plain.Length);   // embedded chart images add bytes
+    }
+
+    [Fact]
+    public void ToPptx_WithCharts_AddsChartSlidesAndImages()
+    {
+        byte[] pptx = new ReportExporter().ToPptx(SampleWithCharts());
+
+        using var ms = new MemoryStream(pptx);
+        using PresentationDocument doc = PresentationDocument.Open(ms, false);
+        IEnumerable<SlidePart> slides = doc.PresentationPart!.SlideParts;
+
+        // Title + 2 sections + 2 chart slides.
+        Assert.Equal(5, slides.Count());
+        // Two of the slides embed a PNG image.
+        Assert.Equal(2, slides.Count(s => s.ImageParts.Any()));
+    }
+
     [Fact]
     public void ToPdf_ProducesAPdf()
     {

@@ -92,7 +92,9 @@ public sealed class ReportService : IReportService
             new ReportTable(
                 ["Type", "Value", "Share"],
                 p.Allocation.Select(s => (IReadOnlyList<string>)
-                    [s.TypeName, Money(s.Value), $"{s.Percent:0.#}%"]).ToList()));
+                    [s.TypeName, Money(s.Value), $"{s.Percent:0.#}%"]).ToList()),
+            new ReportChart(ReportChartKind.Pie,
+                p.Allocation.Select(s => new ReportChartPoint(s.TypeName, (double)s.Value)).ToList()));
 
         IReadOnlyList<GoalProgress> goals = _goals.GetGoals();
         if (goals.Count > 0)
@@ -122,13 +124,17 @@ public sealed class ReportService : IReportService
             [$"Total: {Money(expenses.Sum(e => e.Amount))} across {expenses.Count} entries"],
             new ReportTable(
                 ["Category", "Amount"],
-                byCategory.Select(c => (IReadOnlyList<string>)[c.Category, Money(c.Amount)]).ToList()));
+                byCategory.Select(c => (IReadOnlyList<string>)[c.Category, Money(c.Amount)]).ToList()),
+            new ReportChart(ReportChartKind.Pie,
+                byCategory.Select(c => new ReportChartPoint(c.Category, (double)c.Amount)).ToList()));
 
+        IReadOnlyList<PeriodDatum> monthly = _expenseAnalytics.GetMonthlyTotals(12);
         yield return new ReportSection("Monthly trend (last 12 months)", [],
             new ReportTable(
                 ["Month", "Spend"],
-                _expenseAnalytics.GetMonthlyTotals(12).Select(m => (IReadOnlyList<string>)
-                    [m.Label, Money(m.Amount)]).ToList()));
+                monthly.Select(m => (IReadOnlyList<string>)[m.Label, Money(m.Amount)]).ToList()),
+            new ReportChart(ReportChartKind.Column,
+                monthly.Select(m => new ReportChartPoint(m.Label, (double)m.Amount)).ToList()));
 
         IReadOnlyList<IncomeSummary> income = _income.GetRecent(500);
         decimal totalIncome = income.Sum(i => i.Amount);

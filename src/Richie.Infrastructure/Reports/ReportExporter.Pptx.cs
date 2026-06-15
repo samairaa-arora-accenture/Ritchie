@@ -28,10 +28,15 @@ public sealed partial class ReportExporter
             AddSlide(presentationPart, layoutPart, slideIdList, ref slideId, ref relIndex,
                 content.Title, [$"Generated {content.GeneratedUtc.ToLocalTime():g}", content.PeriodLabel]);
 
-            // One slide per section.
+            // One slide per section; charted sections get an extra image slide.
             foreach (ReportSection section in content.Sections)
+            {
                 AddSlide(presentationPart, layoutPart, slideIdList, ref slideId, ref relIndex,
                     section.Heading, BodyLines(section));
+                if (section.Chart is { Points.Count: > 0 } chart)
+                    AddImageSlide(presentationPart, layoutPart, slideIdList, ref slideId, ref relIndex,
+                        $"{section.Heading} — chart", RenderChartImage(chart));
+            }
 
             presentationPart.Presentation.Append(
                 new P.SlideMasterIdList(new P.SlideMasterId
@@ -75,6 +80,51 @@ public sealed partial class ReportExporter
                     new P.GroupShapeProperties(new D.TransformGroup()),
                     TextShape(2U, "Title", title, 457200, 274638, 8229600, 1143000, bold: true, size: 2800),
                     TextShape(3U, "Body", null, 457200, 1600200, 8229600, 4525963, bold: false, size: 1400, body))),
+            new P.ColorMapOverride(new D.MasterColorMapping()));
+        slidePart.AddPart(layoutPart);
+
+        slideIdList.Append(new P.SlideId
+        {
+            Id = slideId++,
+            RelationshipId = presentationPart.GetIdOfPart(slidePart)
+        });
+        relIndex++;
+    }
+
+    private static void AddImageSlide(
+        PresentationPart presentationPart, SlideLayoutPart layoutPart, P.SlideIdList slideIdList,
+        ref uint slideId, ref uint relIndex, string title, byte[] png)
+    {
+        var slidePart = presentationPart.AddNewPart<SlidePart>($"rIdSlide{relIndex}");
+
+        ImagePart imagePart = slidePart.AddImagePart(ImagePartType.Png, $"rIdImg{relIndex}");
+        using (var imgStream = new MemoryStream(png))
+            imagePart.FeedData(imgStream);
+        string embedId = slidePart.GetIdOfPart(imagePart);
+
+        // Title across the top; image centred below it. The image is 900x540 (5:3); keep that aspect.
+        slidePart.Slide = new P.Slide(
+            new P.CommonSlideData(
+                new P.ShapeTree(
+                    new P.NonVisualGroupShapeProperties(
+                        new P.NonVisualDrawingProperties { Id = 1U, Name = "" },
+                        new P.NonVisualGroupShapeDrawingProperties(),
+                        new P.ApplicationNonVisualDrawingProperties()),
+                    new P.GroupShapeProperties(new D.TransformGroup()),
+                    TextShape(2U, "Title", title, 457200, 274638, 8229600, 1143000, bold: true, size: 2800),
+                    new P.Picture(
+                        new P.NonVisualPictureProperties(
+                            new P.NonVisualDrawingProperties { Id = 3U, Name = "Chart" },
+                            new P.NonVisualPictureDrawingProperties(new D.PictureLocks { NoChangeAspect = true }),
+                            new P.ApplicationNonVisualDrawingProperties()),
+                        new P.BlipFill(
+                            new D.Blip { Embed = embedId },
+                            new D.Stretch(new D.FillRectangle())),
+                        new P.ShapeProperties(
+                            new D.Transform2D(
+                                new D.Offset { X = 838200L, Y = 1524000L },
+                                new D.Extents { Cx = 7467600L, Cy = 4480560L }),
+                            new D.PresetGeometry(new D.AdjustValueList()) { Preset = D.ShapeTypeValues.Rectangle })))),
             new P.ColorMapOverride(new D.MasterColorMapping()));
         slidePart.AddPart(layoutPart);
 
