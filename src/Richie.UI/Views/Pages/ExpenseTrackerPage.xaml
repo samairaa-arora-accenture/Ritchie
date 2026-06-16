@@ -22,7 +22,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <ui:TextBlock Grid.Column="0" FontTypography="TitleLarge" Text="Expense Tracker"
+            <ui:TextBlock Grid.Column="0" FontTypography="TitleLarge" Text="Expenses"
                           Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,8,0" />
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
                 <ui:Button Content="Analytics" Margin="0,0,6,0" Click="OnAnalytics" />
@@ -39,40 +39,35 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="1.2*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <ui:Card Grid.Column="0" Margin="0,0,10,0" MinHeight="92">
+            <ui:Card Grid.Column="0" Margin="0,0,10,0" MinHeight="92" VerticalAlignment="Stretch">
                 <StackPanel Margin="6" VerticalAlignment="Stretch">
-
                     <ui:TextBlock Appearance="Secondary" Text="Spent This Month" />
                     <ui:TextBlock FontTypography="TitleLarge" Foreground="#2563EB" Text="{Binding CurrentMonthText}" />
                     <ui:TextBlock Appearance="Secondary" Margin="0,6,0,0" TextWrapping="Wrap" Text="{Binding MonthOverMonthText}" />
                 </StackPanel>
             </ui:Card>
 
-            <ui:Card Grid.Column="1" Margin="0,0,10,0" MinHeight="92">
+            <ui:Card Grid.Column="1" Margin="0,0,10,0" MinHeight="92" VerticalAlignment="Stretch">
                 <StackPanel Margin="6" VerticalAlignment="Stretch">
-
                     <ui:TextBlock Appearance="Secondary" Text="Income This Month" />
                     <ui:TextBlock FontTypography="TitleLarge" Foreground="#0F766E" Text="{Binding IncomeThisMonthText}" />
                     <ui:TextBlock Appearance="Secondary" Margin="0,6,0,0" TextWrapping="Wrap" />
                 </StackPanel>
             </ui:Card>
 
-
-            <ui:Card Grid.Column="2" Margin="0,0,10,0" MinHeight="92">
+            <ui:Card Grid.Column="2" Margin="0,0,10,0" MinHeight="92" VerticalAlignment="Stretch">
                 <StackPanel Margin="6" VerticalAlignment="Stretch">
-
                     <ui:TextBlock Appearance="Secondary" Text="Top Category" />
                     <ui:TextBlock FontTypography="BodyStrong" Margin="0,4,0,0" TextWrapping="Wrap"
                                   Text="{Binding TopCategoryText, StringFormat='Top category: {0}'}" />
                 </StackPanel>
             </ui:Card>
 
-            <ui:Card Grid.Column="3" MinHeight="92">
+            <ui:Card Grid.Column="3" MinHeight="92" VerticalAlignment="Stretch" Margin="0,0,0,0">
                 <StackPanel Margin="6" VerticalAlignment="Stretch">
-
                     <ui:TextBlock FontTypography="BodyStrong" Text="Insights" Margin="0,0,0,6" />
                     <ItemsControl ItemsSource="{Binding Insights}">
                         <ItemsControl.ItemTemplate>
@@ -123,32 +118,47 @@
                     <Setter Property="FontWeight" Value="SemiBold" />
                     <Setter Property="Background" Value="#F8FAFC" />
                 </Style>
-            </DataGrid.Resources>
+</DataGrid.Resources>
             <DataGrid.Columns>
 
-                <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat=d}" Width="Auto" />
+                <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat=d}" Width="120" />
                 <DataGridTextColumn Header="Category" Binding="{Binding CategoryName}" Width="*" />
-                <DataGridTextColumn Header="Amount" Binding="{Binding Amount, StringFormat='₹{0:N2}'}" Width="Auto" />
-                <DataGridTextColumn Header="Spent by" Binding="{Binding SpentBy}" Width="Auto" />
+                <DataGridTextColumn Header="Amount" Binding="{Binding Amount, StringFormat='₹{0:N2}'}" Width="140" />
+                <DataGridTextColumn Header="Spent by" Binding="{Binding SpentBy}" Width="140" />
                 <DataGridTextColumn Header="Spent for" Binding="{Binding SpentFor}" Width="*" />
-                <DataGridTemplateColumn Header="Recurring" Width="Auto">
+                <DataGridTemplateColumn Header="Recurring" Width="110">
+
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding IsRecurring, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="True" VerticalAlignment="Center" />
+                                <CheckBox IsChecked="{Binding IsRecurring, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      IsEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Center" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Actions" Width="Auto">
+<DataGridTemplateColumn Header="Actions" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <ui:Button Content="Bills" Padding="8,2" Margin="0,0,4,0"
-                                           Tag="{Binding Id}" Click="OnBills" />
-                                <ui:Button Content="Edit" Padding="8,2" Margin="0,0,4,0"
-                                           Tag="{Binding Id}" Click="OnEditExpense" />
-                                <ui:Button Content="Delete" Padding="8,2"
-                                           Tag="{Binding Id}" Click="OnDeleteExpense" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <ui:Button Appearance="Transparent" Padding="6" Margin="0,0,6,0"
+                                           Tag="{Binding Id}" Click="OnBills">
+                                    <ui:Button.Icon>
+                                        <ui:SymbolIcon Symbol="Receipt24" />
+                                    </ui:Button.Icon>
+                                </ui:Button>
+
+                                <ui:Button Appearance="Transparent" Padding="6" Margin="0,0,6,0"
+                                           Tag="{Binding Id}" Click="OnEditExpense">
+                                    <ui:Button.Icon>
+                                        <ui:SymbolIcon Symbol="Edit24" />
+                                    </ui:Button.Icon>
+                                </ui:Button>
+
+                                <ui:Button Appearance="Transparent" Padding="6"
+                                           Tag="{Binding Id}" Click="OnDeleteExpense">
+                                    <ui:Button.Icon>
+                                        <ui:SymbolIcon Symbol="Delete24" />
+                                    </ui:Button.Icon>
+                                </ui:Button>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

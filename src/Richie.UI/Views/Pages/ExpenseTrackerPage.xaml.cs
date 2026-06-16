@@ -41,10 +41,13 @@ public partial class ExpenseTrackerPage : Page
         if (e.OriginalSource is not DependencyObject original)
             return;
 
-        // If clicking on a CheckBox or Button inside the DataGrid cell template, mark as handled
-        // so the control receives the click immediately.
-        if (FindAncestor<CheckBox>(original) != null || FindAncestor<Button>(original) != null)
-            e.Handled = true;
+        // Do not mark checkbox clicks as handled; otherwise toggle can be swallowed depending on
+        // DataGrid/visual tree behavior.
+        //
+        // Keep this handler only to allow embedded Buttons/CheckBox to function normally.
+        // Marking button clicks as handled can prevent the RoutedEvent/Click from reaching the button.
+        // Let the buttons/checkbox handle their own input.
+        // (No-op)
     }
 
     private static T? FindAncestor<T>(DependencyObject current) where T : DependencyObject

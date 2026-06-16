@@ -127,7 +127,7 @@
                 <ui:NavigationViewItem Content="Assets" TargetPageType="{x:Type pages:AssetDocumentationPage}">
                     <ui:NavigationViewItem.Icon><ui:SymbolIcon Symbol="Wallet24" /></ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
-                <ui:NavigationViewItem Content="Expense Tracker" TargetPageType="{x:Type pages:ExpenseTrackerPage}">
+                <ui:NavigationViewItem Content="Expenses" TargetPageType="{x:Type pages:ExpenseTrackerPage}">
                     <ui:NavigationViewItem.Icon><ui:SymbolIcon Symbol="Money24" /></ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
                 <ui:NavigationViewItem Content="Password Vault" TargetPageType="{x:Type pages:PasswordVaultPage}">
