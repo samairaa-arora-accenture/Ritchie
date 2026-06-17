@@ -23,25 +23,6 @@
                 <GradientStop Color="#FEF5E8" Offset="1" />
             </LinearGradientBrush>
 
-<<<<<<< Updated upstream
-            <!-- Warm Dark Mode Colors (not pure black, with orange undertones) -->
-            <SolidColorBrush x:Key="DarkModeBackgroundBrush" Color="#2A2416" />
-            <SolidColorBrush x:Key="DarkModeCardBrush" Color="#3A3228" />
-            <SolidColorBrush x:Key="DarkModeSecondaryCardBrush" Color="#4A4236" />
-            <SolidColorBrush x:Key="DarkModeTextBrush" Color="#F5F1E8" />
-            <SolidColorBrush x:Key="DarkModeSecondaryTextBrush" Color="#E0D9CE" />
-            <SolidColorBrush x:Key="DarkModeTertiaryTextBrush" Color="#B8AFA0" />
-            <SolidColorBrush x:Key="DarkModeBorderBrush" Color="#524A3E" />
-            <SolidColorBrush x:Key="DarkModeHoverBrush" Color="#4A4236" />
-
-            <!-- Primary Button Colors (Soft Golden Orange) -->
-            <SolidColorBrush x:Key="DarkModeButtonPrimaryBrush" Color="#E6A756" />
-            <SolidColorBrush x:Key="DarkModeButtonPrimaryHoverBrush" Color="#D99F3E" />
-            <SolidColorBrush x:Key="DarkModeButtonSecondaryBrush" Color="#FFFFFF" />
-            <SolidColorBrush x:Key="DarkModeButtonSecondaryHoverBrush" Color="#F8F4EC" />
-
-=======
-<<<<<<< HEAD
 
             <!-- Professional Dracula-inspired Dark Mode Colors -->
             <SolidColorBrush x:Key="DarkModeBackgroundBrush" Color="#1E1E2E" />
