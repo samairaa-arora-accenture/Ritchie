@@ -13,8 +13,7 @@ public static class BrandColors
     public const string Accent = "#fbfaf7";    // Soft Gold
 
     // Status triad (consistent app-wide): green = good, amber = needs attention, red = critical.
-    // Updated to remove green/red while keeping a clear status distinction.
-    public const string Success = "#25eb3f"; // blue
+    public const string Success = "#1FA56C";
     public const string Warning = "#DE9326";
     public const string Danger = "#ed523a"; // violet
 
@@ -40,16 +39,16 @@ public static class BrandColors
         "#5A6B8C"  // Slate
     ];
 
-    /// <summary>Distinct, colour-blind-safe categorical series colours.</summary>
+    /// <summary>Distinct, colour-blind-safe categorical series colours for asset allocation charts.</summary>
     public static readonly IReadOnlyList<string> Categorical =
     [
         "#80dbf4", // Richie Red
         "#D89A45", // Gold
-        "#52042a", // Emerald
+        "#4FA87A", // Emerald
         "#3E86C6", // Blue
         "#CC7DAC", // Rose
         "#6E59A5", // Violet
-        "#109787", // Teal
+        "#2A9D8F", // Teal
         "#B5651D", // Sienna
         "#8E7CC3", // Lavender
         "#bcca25"  // Olive
