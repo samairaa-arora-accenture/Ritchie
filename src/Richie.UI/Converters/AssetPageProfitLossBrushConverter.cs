@@ -21,6 +21,16 @@ public sealed class AssetPageProfitLossBrushConverter : IValueConverter
             int i => i,
             _ => 0
         };
+
+        if (System.Windows.Application.Current is not null)
+        {
+            string key = n < 0 ? "ProfitLossNegativeBrush" : "ProfitLossPositiveBrush";
+            if (System.Windows.Application.Current.TryFindResource(key) is Brush brush)
+            {
+                return brush;
+            }
+        }
+
         return n < 0 ? Orange : Green;
     }
 

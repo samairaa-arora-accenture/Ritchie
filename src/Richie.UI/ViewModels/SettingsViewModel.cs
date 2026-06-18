@@ -8,6 +8,8 @@ using Richie.Application.Settings;
 using Richie.Domain.Notifications;
 using Richie.UI.Services;
 using Wpf.Ui.Appearance;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
 
 namespace Richie.UI.ViewModels;
 
@@ -105,9 +107,50 @@ public partial class SettingsViewModel : ObservableObject
 
         // ApplicationThemeManager.Apply resets the accent to the system accent, so re-brand afterwards.
         ApplyBrandAccent();
-        
         // Update custom theme resources (backgrounds, sidebar colors, etc.)
         Richie.UI.App.UpdateThemeResources();
+
+        // Apply theme-specific overrides for charts, text and status colours
+        ApplyThemeOverrides(actualTheme);
+    }
+
+    public static void ApplyThemeOverrides(string theme)
+    {
+        if (System.Windows.Application.Current is null)
+            return;
+
+        bool isDark = theme == "Dark";
+        var resources = System.Windows.Application.Current.Resources;
+
+        if (isDark)
+        {
+            // Softer text colors
+            resources["TextFillColorPrimaryBrush"] = new SolidColorBrush(Color.FromRgb(0xE2, 0xE8, 0xF0));
+            resources["TextFillColorSecondaryBrush"] = new SolidColorBrush(Color.FromRgb(0x94, 0xA3, 0xB8));
+            resources["TextFillColorTertiaryBrush"] = new SolidColorBrush(Color.FromRgb(0x64, 0x74, 0x8B));
+
+            // Status colours using your warm palette
+            resources["StatusTealBrush"] = new SolidColorBrush(Color.FromRgb(0x57, 0xB8, 0x94));
+            resources["StatusOrangeBrush"] = new SolidColorBrush(Color.FromRgb(0xE6, 0xA7, 0x56));
+            resources["StatusAmberBrush"] = new SolidColorBrush(Color.FromRgb(0xE6, 0xA7, 0x56));
+            resources["StatusBlueBrush"] = new SolidColorBrush(Color.FromRgb(0x5B, 0x8D, 0xEF));
+
+            resources["BadgeTextBrush"] = new SolidColorBrush(Color.FromRgb(0x1E, 0x1E, 0x2E));
+        }
+        else
+        {
+            // Restore light theme defaults
+            resources.Remove("TextFillColorPrimaryBrush");
+            resources.Remove("TextFillColorSecondaryBrush");
+            resources.Remove("TextFillColorTertiaryBrush");
+
+            resources["StatusTealBrush"] = new SolidColorBrush(Color.FromRgb(0x57, 0xB8, 0x94));
+            resources["StatusOrangeBrush"] = new SolidColorBrush(Color.FromRgb(0xE6, 0xA7, 0x56));
+            resources["StatusAmberBrush"] = new SolidColorBrush(Color.FromRgb(0xE6, 0xA7, 0x56));
+            resources["StatusBlueBrush"] = new SolidColorBrush(Color.FromRgb(0x5B, 0x8D, 0xEF));
+
+            resources["BadgeTextBrush"] = Brushes.White;
+        }
     }
 
     /// <summary>Applies a professional brand accent across the app (buttons, nav highlight, focus rings).</summary>
