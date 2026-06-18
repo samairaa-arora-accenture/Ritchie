@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.Measure;
 using Richie.Application.Assets;
 using Richie.Application.Audit;
 using Richie.Application.Authentication;
@@ -35,6 +36,7 @@ public partial class DashboardViewModel : ObservableObject
     [ObservableProperty] private string _profitLossText = "—";
     [ObservableProperty] private Brush _profitLossBrush = Brushes.Gray;
     [ObservableProperty] private int _healthScore;
+    [ObservableProperty] private string _healthScoreText = string.Empty;
     [ObservableProperty] private string _healthRating = string.Empty;
     [ObservableProperty] private Brush _healthBrush = Brushes.Gray;
     [ObservableProperty] private bool _healthIsInterim;
@@ -99,14 +101,15 @@ public partial class DashboardViewModel : ObservableObject
 
         BuildHero(s);
 
-        TotalAssetsText = Money(s.TotalAssets);
-        TotalInvestedText = Money(s.TotalInvested);
-        TotalExpensesText = Money(s.TotalExpensesThisMonth);
-        ProfitLossText = $"{Money(s.ProfitLoss)} ({s.ProfitLossPercent:+0.0;-0.0;0.0}%)";
+        TotalAssetsText = CompactMoney(s.TotalAssets);
+        TotalInvestedText = CompactMoney(s.TotalInvested);
+        TotalExpensesText = CompactMoney(s.TotalExpensesThisMonth);
+        ProfitLossText = $"{CompactMoney(s.ProfitLoss)} ({s.ProfitLossPercent:+0.0;-0.0;0.0}%)";
         ProfitLossBrush = s.ProfitLoss < 0 ? Red : Green;
         HealthScore = s.HealthScore;
+        HealthScoreText = $"{s.HealthScore}/100";
         HealthRating = s.HealthRating;
-        HealthBrush = s.HealthScore >= 80 ? Green : s.HealthScore >= 60 ? Amber : Red;
+        HealthBrush = s.HealthScore >= 80 ? Green : s.HealthScore >= 60 ? Orange : Red;
         HealthIsInterim = s.HealthIsInterim;
 
         UpcomingSips = new ObservableCollection<UpcomingSipRow>(s.UpcomingSips.Select(u =>
@@ -135,7 +138,7 @@ public partial class DashboardViewModel : ObservableObject
         NoAssets = !HasAssets;
         AllocationSeries = allocation
             .Select((a, i) => (ISeries)new PieSeries<double>
-                { Values = [(double)a.Value], Name = a.TypeName, InnerRadius = 45, Fill = BrandPalette.Categorical(i) })
+                { Values = new[] { (double)a.Value }, Name = a.TypeName, InnerRadius = 45, Fill = BrandPalette.Categorical(i) })
             .ToArray();
         // Custom legend (matches slice colours) so it lays out inside the card instead of the
         // built-in legend overflowing it.
@@ -149,8 +152,8 @@ public partial class DashboardViewModel : ObservableObject
         IncomeExpenseYAxes = [new Axis { LabelsPaint = BrandPalette.ChartAxesLabelPaint, SeparatorsPaint = BrandPalette.ChartGridLinesPaint }];
 
         // Investment growth — invested capital over time (line + period-growth badge).
-        InvestmentSeries =
-        [
+        InvestmentSeries = new ISeries[]
+        {
             new LineSeries<double>
             {
                 Name = "Invested",
@@ -167,12 +170,40 @@ public partial class DashboardViewModel : ObservableObject
         InvestmentYAxes = [new Axis { LabelsPaint = BrandPalette.ChartAxesLabelPaint, SeparatorsPaint = BrandPalette.ChartGridLinesPaint }];
         InvestmentGrowthText = $"{(s.InvestedGrowthPercent >= 0 ? "▲ +" : "▼ ")}{s.InvestedGrowthPercent:0.#}% YoY";
 
-        // Expense breakdown — this month's spend by category (named categories only, no "Others").
+        // Expense breakdown — this month's spend by category (horizontal bar chart for better space efficiency).
         var categories = _analytics.GetCategoryDistribution(AnalyticsPeriod.ThisMonth)
-            .Where(c => c.Amount > 0).ToList();
-        ExpenseBreakdownSeries =
-        [
-            new ColumnSeries<double>
+            .Where(c => c.Amount > 0)
+            .OrderByDescending(c => c.Amount)
+            .ToList();
+
+        // Category-specific colors for each expense type
+        var colorMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["Transportation"] = "#F4B400",  // Yellow
+            ["Food"] = "#34A853",            // Green
+            ["Utilities"] = "#4285F4",       // Blue
+            ["Shopping"] = "#A142F4",        // Purple
+            ["Healthcare"] = "#00ACC1",      // Teal
+            ["Entertainment"] = "#FB8C00",   // Orange
+            ["Education"] = "#4B4FC7",       // Indigo
+            ["Other"] = "#9E9E9E",           // Gray
+        };
+
+        // Create one RowSeries per category with its own color (horizontal bars)
+        var rowSeries = new List<ISeries>();
+        var categoryLabels = new List<string>();
+        
+        foreach (var category in categories)
+        {
+            categoryLabels.Add(category.CategoryName);
+            
+            var color = colorMap.ContainsKey(category.CategoryName)
+                ? colorMap[category.CategoryName]
+                : "#9E9E9E";
+            
+            var skColor = SKColor.Parse(color);
+            
+            rowSeries.Add(new RowSeries<double>
             {
                 Name = "Spend",
                 Values = categories.Select(c => (double)c.Amount).ToArray(),
@@ -194,6 +225,46 @@ public partial class DashboardViewModel : ObservableObject
         Fill = new SolidColorPaint(color.WithAlpha(50)),
         LineSmoothness = 0.6
     };
+
+    private static string FormatCompactNumber(double value)
+    {
+        double abs = Math.Abs(value);
+        if (abs == 0)
+        {
+            return "0";
+        }
+        if (abs >= 1000)
+        {
+            double v = value / 1000;
+            return v.ToString("0.#", CultureInfo.InvariantCulture) + "K";
+        }
+        return value.ToString("0", CultureInfo.InvariantCulture);
+    }
+
+    private static string FormatMonthLabel(string label)
+    {
+        if (string.IsNullOrWhiteSpace(label))
+            return label;
+
+        // Expecting labels like "MMM yyyy" (e.g., "Oct 2025"). Try to parse and reformat as "MMM-yy".
+        if (DateTime.TryParseExact(label, "MMM yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out var dt))
+        {
+            return dt.ToString("MMM-yy", CultureInfo.CurrentCulture);
+        }
+
+        // Fallback: if the label ends with a 4-digit year, shorten it to two digits and join with a dash.
+        var parts = label.Split(' ',
+            StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length >= 2 && parts[^1].Length == 4 && int.TryParse(parts[^1], out _))
+        {
+            var year2 = parts[^1].Substring(parts[^1].Length - 2);
+            var left = string.Join(" ", parts.Take(parts.Length - 1));
+            return $"{left}-{year2}";
+        }
+
+        // Generic fallback: replace space with dash (e.g., "Oct 2025" -> "Oct-2025").
+        return label.Replace(' ', '-');
+    }
 
     private void BuildHero(DashboardSummary s)
     {
@@ -221,4 +292,5 @@ public partial class DashboardViewModel : ObservableObject
     };
 
     private static string Money(decimal value) => Richie.Application.Common.CurrencyFormatter.Format(value);
+    private static string CompactMoney(decimal value) => Richie.Application.Common.CurrencyFormatter.FormatCompact(value);
 }

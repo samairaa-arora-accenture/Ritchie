@@ -13,13 +13,33 @@ public static class BrandColors
     public const string Accent = "#fbfaf7";    // Soft Gold
 
     // Status triad (consistent app-wide): green = good, amber = needs attention, red = critical.
-    // Updated to remove green/red while keeping a clear status distinction.
-    public const string Success = "#25eb3f"; // blue
+    public const string Success = "#1FA56C";
     public const string Warning = "#DE9326";
     public const string Danger = "#ed523a"; // violet
 
 
-    /// <summary>Distinct, colour-blind-safe categorical series colours.</summary>
+    // Reserved exclusively for profit (green) / loss (red) in exported reports. By design NO chart
+    // series or other report component uses these two colours, so they stay semantically unambiguous.
+    public const string ProfitGreen = "#1FA56C";
+    public const string LossRed = "#CE2E20";
+
+    /// <summary>Series colours for report charts — deliberately free of green and red hues so the
+    /// reserved profit/loss colours are never confused with a chart slice. No "Others" bucket.</summary>
+    public static readonly IReadOnlyList<string> ReportChartPalette =
+    [
+        "#D89A45", // Gold
+        "#3E86C6", // Blue
+        "#6E59A5", // Violet
+        "#CC7DAC", // Rose
+        "#B5651D", // Sienna
+        "#8E7CC3", // Lavender
+        "#2A7DB1", // Ocean
+        "#E2BE74", // Soft gold
+        "#94527A", // Plum
+        "#5A6B8C"  // Slate
+    ];
+
+    /// <summary>Distinct, colour-blind-safe categorical series colours for asset allocation charts.</summary>
     public static readonly IReadOnlyList<string> Categorical =
     [
         "#2563EB", // Royal Blue
