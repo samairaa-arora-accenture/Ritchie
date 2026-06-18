@@ -9,6 +9,8 @@ public sealed class ProfitLossBrushConverter : IValueConverter
 {
     private static readonly Brush Green = Freeze(Color.FromRgb(0x0F, 0x7B, 0x0F));
     private static readonly Brush Red = Freeze(Color.FromRgb(0xC4, 0x2B, 0x1C));
+    private static readonly Brush DarkGreen = Freeze(Color.FromRgb(0x22, 0xC5, 0x5E));
+    private static readonly Brush DarkRed = Freeze(Color.FromRgb(0xEF, 0x44, 0x44));
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
@@ -20,6 +22,13 @@ public sealed class ProfitLossBrushConverter : IValueConverter
             int i => i,
             _ => 0
         };
+
+        bool isDark = Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme() == Wpf.Ui.Appearance.ApplicationTheme.Dark;
+        if (isDark)
+        {
+            return n < 0 ? DarkRed : DarkGreen;
+        }
+
         return n < 0 ? Red : Green;
     }
 

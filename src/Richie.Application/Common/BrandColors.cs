@@ -22,15 +22,15 @@ public static class BrandColors
     /// <summary>Distinct, colour-blind-safe categorical series colours.</summary>
     public static readonly IReadOnlyList<string> Categorical =
     [
-        "#80dbf4", // Richie Red
-        "#D89A45", // Gold
-        "#52042a", // Emerald
-        "#3E86C6", // Blue
-        "#CC7DAC", // Rose
-        "#6E59A5", // Violet
-        "#109787", // Teal
-        "#B5651D", // Sienna
-        "#8E7CC3", // Lavender
-        "#bcca25"  // Olive
+        "#2563EB", // Royal Blue
+        "#D97706", // Amber
+        "#7C3AED", // Purple
+        "#EA580C", // Orange
+        "#3B82F6", // Medium Blue
+        "#6D28D9", // Deep Purple
+        "#EAB308", // Yellow
+        "#4F46E5", // Indigo
+        "#64748B", // Slate
+        "#1E3A8A"  // Navy Blue
     ];
 }

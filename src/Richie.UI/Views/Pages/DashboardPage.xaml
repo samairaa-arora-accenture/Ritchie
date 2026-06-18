@@ -147,7 +147,10 @@
                         <ui:TextBlock FontTypography="BodyStrong" Text="Income vs Expense" />
                         <ui:TextBlock Appearance="Secondary" FontTypography="Caption" Text="Last 9 months" Margin="0,0,0,8" />
                         <lvc:CartesianChart Height="220" Series="{Binding IncomeExpenseSeries}"
-                                            XAxes="{Binding IncomeExpenseAxes}" LegendPosition="Bottom" />
+                                            XAxes="{Binding IncomeExpenseAxes}"
+                                            YAxes="{Binding IncomeExpenseYAxes}"
+                                            LegendTextPaint="{DynamicResource ChartLegendTextPaint}"
+                                            LegendPosition="Bottom" />
                     </StackPanel>
                 </ui:Card>
             </Grid>
@@ -177,6 +180,7 @@
                         </Grid>
                         <lvc:CartesianChart Height="210" Margin="0,8,0,0" Series="{Binding InvestmentSeries}"
                                             XAxes="{Binding InvestmentAxes}"
+                                            YAxes="{Binding InvestmentYAxes}"
                                             Visibility="{Binding HasAssets, Converter={StaticResource BoolToVisibilityConverter}}" />
                         <ui:TextBlock Appearance="Secondary" Margin="0,8,0,0" Text="Add assets to track investment growth."
                                       Visibility="{Binding NoAssets, Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -188,7 +192,8 @@
                         <ui:TextBlock FontTypography="BodyStrong" Text="Expense breakdown" />
                         <ui:TextBlock Appearance="Secondary" FontTypography="Caption" Text="This month" Margin="0,0,0,8" />
                         <lvc:CartesianChart Height="220" Series="{Binding ExpenseBreakdownSeries}"
-                                            XAxes="{Binding ExpenseBreakdownAxes}" />
+                                            XAxes="{Binding ExpenseBreakdownAxes}"
+                                            YAxes="{Binding ExpenseBreakdownYAxes}" />
                     </StackPanel>
                 </ui:Card>
             </Grid>

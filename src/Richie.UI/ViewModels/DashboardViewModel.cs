@@ -46,11 +46,14 @@ public partial class DashboardViewModel : ObservableObject
 
     [ObservableProperty] private ISeries[] _incomeExpenseSeries = [];
     [ObservableProperty] private Axis[] _incomeExpenseAxes = [];
+    [ObservableProperty] private Axis[] _incomeExpenseYAxes = [];
     [ObservableProperty] private ISeries[] _investmentSeries = [];
     [ObservableProperty] private Axis[] _investmentAxes = [];
+    [ObservableProperty] private Axis[] _investmentYAxes = [];
     [ObservableProperty] private string _investmentGrowthText = string.Empty;
     [ObservableProperty] private ISeries[] _expenseBreakdownSeries = [];
     [ObservableProperty] private Axis[] _expenseBreakdownAxes = [];
+    [ObservableProperty] private Axis[] _expenseBreakdownYAxes = [];
 
     // Hero greeting (top of the dashboard).
     [ObservableProperty] private string _heroDateText = string.Empty;
@@ -66,9 +69,19 @@ public partial class DashboardViewModel : ObservableObject
     [ObservableProperty] private bool _hasActivity;
     [ObservableProperty] private bool _noActivity;
 
-    private static readonly Brush Red = new SolidColorBrush(Color.FromRgb(0xC4, 0x2B, 0x1C));
-    private static readonly Brush Amber = new SolidColorBrush(Color.FromRgb(0x9D, 0x5D, 0x00));
-    private static readonly Brush Green = new SolidColorBrush(Color.FromRgb(0x0F, 0x7B, 0x0F));
+    private static bool IsDarkMode => Wpf.Ui.Appearance.ApplicationThemeManager.GetAppTheme() == Wpf.Ui.Appearance.ApplicationTheme.Dark;
+
+    private static Brush Red => IsDarkMode 
+        ? new SolidColorBrush(Color.FromRgb(0xEF, 0x44, 0x44)) 
+        : new SolidColorBrush(Color.FromRgb(0xC4, 0x2B, 0x1C));
+
+    private static Brush Amber => IsDarkMode 
+        ? new SolidColorBrush(Color.FromRgb(0xF5, 0x9E, 0x0B)) 
+        : new SolidColorBrush(Color.FromRgb(0x9D, 0x5D, 0x00));
+
+    private static Brush Green => IsDarkMode 
+        ? new SolidColorBrush(Color.FromRgb(0x22, 0xC5, 0x5E)) 
+        : new SolidColorBrush(Color.FromRgb(0x0F, 0x7B, 0x0F));
 
     public DashboardViewModel(IDashboardService dashboard, IAssetService assets,
         IExpenseAnalyticsService analytics, IIncomeService income, IUserSession session)
@@ -128,12 +141,12 @@ public partial class DashboardViewModel : ObservableObject
         // built-in legend overflowing it.
         AllocationLegend = new ObservableCollection<AllocationLegendItem>(
             allocation.Select((a, i) => new AllocationLegendItem($"{a.TypeName}  {a.Percent:0.#}%", BrandPalette.MediaBrush(i))));
-
         // Income vs Expense — filled area trend over the last 9 months.
         IReadOnlyList<PeriodDatum> income = _income.GetMonthlyTotals(9);
         IReadOnlyList<PeriodDatum> expense = _analytics.GetMonthlyTotals(9);
         IncomeExpenseSeries = [Area("Income", income, BrandPalette.Success), Area("Expense", expense, BrandPalette.Danger)];
-        IncomeExpenseAxes = [new Axis { Labels = income.Select(d => d.Label).ToArray(), LabelsRotation = 0 }];
+        IncomeExpenseAxes = [new Axis { Labels = income.Select(d => d.Label).ToArray(), LabelsRotation = 0, LabelsPaint = BrandPalette.ChartAxesLabelPaint, SeparatorsPaint = BrandPalette.ChartGridLinesPaint }];
+        IncomeExpenseYAxes = [new Axis { LabelsPaint = BrandPalette.ChartAxesLabelPaint, SeparatorsPaint = BrandPalette.ChartGridLinesPaint }];
 
         // Investment growth — invested capital over time (line + period-growth badge).
         InvestmentSeries =
@@ -150,7 +163,8 @@ public partial class DashboardViewModel : ObservableObject
                 LineSmoothness = 0.5
             }
         ];
-        InvestmentAxes = [new Axis { Labels = s.InvestedHistory.Select(d => d.Label).ToArray() }];
+        InvestmentAxes = [new Axis { Labels = s.InvestedHistory.Select(d => d.Label).ToArray(), LabelsPaint = BrandPalette.ChartAxesLabelPaint, SeparatorsPaint = BrandPalette.ChartGridLinesPaint }];
+        InvestmentYAxes = [new Axis { LabelsPaint = BrandPalette.ChartAxesLabelPaint, SeparatorsPaint = BrandPalette.ChartGridLinesPaint }];
         InvestmentGrowthText = $"{(s.InvestedGrowthPercent >= 0 ? "▲ +" : "▼ ")}{s.InvestedGrowthPercent:0.#}% YoY";
 
         // Expense breakdown — this month's spend by category (named categories only, no "Others").
@@ -165,7 +179,8 @@ public partial class DashboardViewModel : ObservableObject
                 Fill = new SolidColorPaint(BrandPalette.Primary)
             }
         ];
-        ExpenseBreakdownAxes = [new Axis { Labels = categories.Select(c => c.CategoryName).ToArray(), LabelsRotation = 20 }];
+        ExpenseBreakdownAxes = [new Axis { Labels = categories.Select(c => c.CategoryName).ToArray(), LabelsRotation = 20, LabelsPaint = BrandPalette.ChartAxesLabelPaint, SeparatorsPaint = BrandPalette.ChartGridLinesPaint }];
+        ExpenseBreakdownYAxes = [new Axis { LabelsPaint = BrandPalette.ChartAxesLabelPaint, SeparatorsPaint = BrandPalette.ChartGridLinesPaint }];
     }
 
     private static LineSeries<double> Area(string name, IReadOnlyList<PeriodDatum> data, SKColor color) => new()
