@@ -109,7 +109,7 @@ public partial class DashboardViewModel : ObservableObject
         HealthScore = s.HealthScore;
         HealthScoreText = $"{s.HealthScore}/100";
         HealthRating = s.HealthRating;
-        HealthBrush = s.HealthScore >= 80 ? Green : s.HealthScore >= 60 ? Orange : Red;
+        HealthBrush = s.HealthScore >= 80 ? Green : s.HealthScore >= 60 ? Amber : Red;
         HealthIsInterim = s.HealthIsInterim;
 
         UpcomingSips = new ObservableCollection<UpcomingSipRow>(s.UpcomingSips.Select(u =>
@@ -152,8 +152,8 @@ public partial class DashboardViewModel : ObservableObject
         IncomeExpenseYAxes = [new Axis { LabelsPaint = BrandPalette.ChartAxesLabelPaint, SeparatorsPaint = BrandPalette.ChartGridLinesPaint }];
 
         // Investment growth — invested capital over time (line + period-growth badge).
-        InvestmentSeries = new ISeries[]
-        {
+        InvestmentSeries =
+        [
             new LineSeries<double>
             {
                 Name = "Invested",
@@ -193,8 +193,9 @@ public partial class DashboardViewModel : ObservableObject
         var rowSeries = new List<ISeries>();
         var categoryLabels = new List<string>();
         
-        foreach (var category in categories)
+        for (int i = 0; i < categories.Count; i++)
         {
+            var category = categories[i];
             categoryLabels.Add(category.CategoryName);
             
             var color = colorMap.ContainsKey(category.CategoryName)
@@ -203,15 +204,28 @@ public partial class DashboardViewModel : ObservableObject
             
             var skColor = SKColor.Parse(color);
             
-            rowSeries.Add(new RowSeries<double>
+            // Pad the values array so the value is at the correct index for this category
+            var values = new double?[categories.Count];
+            values[i] = (double)category.Amount;
+            
+            rowSeries.Add(new RowSeries<double?>
             {
-                Name = "Spend",
-                Values = categories.Select(c => (double)c.Amount).ToArray(),
-                Fill = new SolidColorPaint(BrandPalette.Primary)
-            }
-        ];
-        ExpenseBreakdownAxes = [new Axis { Labels = categories.Select(c => c.CategoryName).ToArray(), LabelsRotation = 20, LabelsPaint = BrandPalette.ChartAxesLabelPaint, SeparatorsPaint = BrandPalette.ChartGridLinesPaint }];
-        ExpenseBreakdownYAxes = [new Axis { LabelsPaint = BrandPalette.ChartAxesLabelPaint, SeparatorsPaint = BrandPalette.ChartGridLinesPaint }];
+                Name = category.CategoryName,
+                Values = values,
+                Fill = new SolidColorPaint(skColor),
+                MaxBarWidth = 24,
+                DataLabelsPosition = DataLabelsPosition.End,
+                DataLabelsFormatter = (point) => FormatCompactNumber(point.Coordinate.PrimaryValue)
+            });
+        }
+
+        ExpenseBreakdownSeries = rowSeries.ToArray();
+        
+        // X axis: values (horizontal) — compact formatting, start at zero
+        ExpenseBreakdownAxes = [new Axis { Labeler = FormatCompactNumber, MinLimit = 0, LabelsPaint = BrandPalette.ChartAxesLabelPaint, SeparatorsPaint = BrandPalette.ChartGridLinesPaint }];
+        
+        // Y axis: category labels (vertical)
+        ExpenseBreakdownYAxes = [new Axis { Labels = categoryLabels.ToArray(), LabelsPaint = BrandPalette.ChartAxesLabelPaint, SeparatorsPaint = BrandPalette.ChartGridLinesPaint }];
     }
 
     private static LineSeries<double> Area(string name, IReadOnlyList<PeriodDatum> data, SKColor color) => new()

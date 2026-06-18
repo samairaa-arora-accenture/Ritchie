@@ -31,7 +31,7 @@ public sealed class AssetPageProfitLossBrushConverter : IValueConverter
             }
         }
 
-        return n < 0 ? Orange : Teal;
+        return n < 0 ? Orange : Green;
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>

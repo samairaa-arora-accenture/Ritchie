@@ -171,7 +171,8 @@ public partial class HealthAuditViewModel : ObservableObject
                 }).ToArray(),
                 TextSize = 10,
                 LabelsPaint = BrandPalette.ChartAxesLabelPaint,
-                SeparatorsPaint = BrandPalette.ChartGridLinesPaint
+                SeparatorsPaint = BrandPalette.ChartGridLinesPaint,
+                LabelsBackground = new(0, 0, 0, 0)
             }
         ];
         HealthRadarRadiusAxes = [
@@ -181,7 +182,9 @@ public partial class HealthAuditViewModel : ObservableObject
                 MaxLimit = 100,
                 TextSize = 8,
                 LabelsPaint = BrandPalette.ChartAxesLabelPaint,
-                SeparatorsPaint = BrandPalette.ChartGridLinesPaint
+                SeparatorsPaint = BrandPalette.ChartGridLinesPaint,
+                LabelsBackground = new(0, 0, 0, 0),
+                LabelsAngle = 45
             }
         ];
         HealthRadarDrawMargin = new Margin(15);
@@ -211,6 +214,7 @@ public partial class HealthAuditViewModel : ObservableObject
             {
                 Labels = benchmark.Select(b => b.ClassName).ToArray(),
                 LabelsRotation = 0,
+                TextSize = 10,
                 LabelsPaint = BrandPalette.ChartAxesLabelPaint,
                 SeparatorsPaint = BrandPalette.ChartGridLinesPaint
             }
