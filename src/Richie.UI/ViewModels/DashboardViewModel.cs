@@ -72,9 +72,9 @@ public partial class DashboardViewModel : ObservableObject
     [ObservableProperty] private bool _hasActivity;
     [ObservableProperty] private bool _noActivity;
 
-    private static readonly Brush Red = new SolidColorBrush(Color.FromRgb(0xFF, 0xB3, 0x66));       // Light Orange for losses/critical
-    private static readonly Brush Orange = new SolidColorBrush(Color.FromRgb(0xE6, 0xA7, 0x56));   // Orange for 60-79 health
-    private static readonly Brush Green = new SolidColorBrush(Color.FromRgb(0x57, 0xB8, 0x94));
+    private static readonly Brush Red = new SolidColorBrush(Color.FromRgb(0xD9, 0x6C, 0x6C));       // Professional Red for losses/critical
+    private static readonly Brush Orange = new SolidColorBrush(Color.FromRgb(0xE6, 0xA7, 0x56));   // Soft Golden Orange for moderate
+    private static readonly Brush Green = new SolidColorBrush(Color.FromRgb(0x57, 0xB8, 0x94));    // Professional Green for healthy
 
     public DashboardViewModel(IDashboardService dashboard, IAssetService assets,
         IExpenseAnalyticsService analytics, IIncomeService income, IUserSession session)

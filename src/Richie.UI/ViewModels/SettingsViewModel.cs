@@ -105,6 +105,9 @@ public partial class SettingsViewModel : ObservableObject
 
         // ApplicationThemeManager.Apply resets the accent to the system accent, so re-brand afterwards.
         ApplyBrandAccent();
+        
+        // Update custom theme resources (backgrounds, sidebar colors, etc.)
+        Richie.UI.App.UpdateThemeResources();
     }
 
     /// <summary>Applies a professional brand accent across the app (buttons, nav highlight, focus rings).</summary>
@@ -114,8 +117,8 @@ public partial class SettingsViewModel : ObservableObject
         if (theme is ApplicationTheme.Unknown)
             theme = ApplicationTheme.Light;
 
-        // Use a professional blue/teal accent instead of red for modern UI
-        var accent = (Color)ColorConverter.ConvertFromString("#3B82F6")!; // Professional blue
+        // Apply Soft Golden Orange as the primary accent color
+        var accent = (Color)ColorConverter.ConvertFromString("#E6A756")!; // Soft Golden Orange
         ApplicationAccentColorManager.Apply(accent, theme);
     }
 
